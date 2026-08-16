@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIST CSF to ISO 27001 Control Mapping - Diana Rodriguez Portfolio</title>
+    <style>
+        :root { --primary: #1a365d; --secondary: #2b6cb0; --accent: #38a169; --bg: #f7fafc; --text: #2d3748; --border: #e2e8f0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; color: var(--text); line-height: 1.7; background: var(--bg); }
+        .header { background: var(--primary); color: white; padding: 40px 20px; text-align: center; }
+        .header a { color: #90cdf4; text-decoration: none; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
+        h2 { color: var(--primary); font-size: 1.4rem; margin: 30px 0 14px; border-bottom: 2px solid var(--secondary); padding-bottom: 8px; }
+        h3 { color: var(--secondary); font-size: 1.1rem; margin: 20px 0 10px; }
+        .content-block { background: white; border-radius: 8px; padding: 30px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow-x: auto; }
+        p { margin-bottom: 12px; font-size: 0.97rem; }
+        table.mapping { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.88rem; }
+        table.mapping th { background: var(--primary); color: white; padding: 12px 10px; text-align: left; font-size: 0.82rem; }
+        table.mapping td { padding: 10px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+        table.mapping tr:hover td { background: #f7fafc; }
+        table.mapping .nist-id { font-weight: 600; color: var(--secondary); white-space: nowrap; }
+        table.mapping .iso-id { font-weight: 600; color: var(--accent); white-space: nowrap; }
+        .function-badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.78rem; font-weight: 600; }
+        .fn-id { background: #fed7d7; color: #9b2c2c; }
+        .fn-pr { background: #feebcb; color: #9c4221; }
+        .fn-de { background: #c6f6d5; color: #276749; }
+        .fn-rs { background: #bee3f8; color: #2a4365; }
+        .fn-rc { background: #e9d8fd; color: #44337a; }
+        .note { background: #ebf8ff; border-left: 4px solid var(--secondary); padding: 14px 18px; margin: 16px 0; border-radius: 0 8px 8px 0; font-size: 0.92rem; }
+        .legend { display: flex; gap: 16px; flex-wrap: wrap; margin: 16px 0; }
+        .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; }
+        .footer { text-align: center; padding: 30px 20px; color: #718096; font-size: 0.85rem; border-top: 1px solid var(--border); margin-top: 40px; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>NIST CSF 2.0 to ISO 27001:2022 Control Mapping</h1>
+    <p>Cross-framework alignment for unified compliance programs</p>
+    <p style="margin-top:12px"><a href="../index.html#templates">&larr; Back to Portfolio</a></p>
+</div>
+
+<div class="container">
+
+    <div class="content-block">
+        <h2>Overview</h2>
+        <p>This mapping document aligns NIST Cybersecurity Framework 2.0 functions and categories with ISO 27001:2022 Annex A controls. It supports unified compliance programs by demonstrating how a single set of controls can satisfy multiple frameworks simultaneously, reducing audit fatigue and improving security posture efficiency.</p>
+
+        <h3>NIST CSF Functions</h3>
+        <div class="legend">
+            <div class="legend-item"><span class="function-badge fn-id">ID</span> Identify</div>
+            <div class="legend-item"><span class="function-badge fn-pr">PR</span> Protect</div>
+            <div class="legend-item"><span class="function-badge fn-de">DE</span> Detect</div>
+            <div class="legend-item"><span class="function-badge fn-rs">RS</span> Respond</div>
+            <div class="legend-item"><span class="function-badge fn-rc">RC</span> Recover</div>
+        </div>
+    </div>
+
+    <div class="content-block">
+        <h2>GOVERN (GV) &rarr; ISO 27001 Mapping</h2>
+        <table class="mapping">
+            <thead>
+                <tr><th>NIST CSF Category</th><th>NIST Subcategory</th><th>ISO 27001:2022 Control</th><th>Alignment</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="nist-id">GV.OC</td><td>Organizational Context</td><td class="iso-id">4.1, 4.2, 4.3</td><td>Context of the organization, interested parties, scope</td></tr>
+                <tr><td class="nist-id">GV.RM</td><td>Risk Management Strategy</td><td class="iso-id">5.3, 6.1, 8.2</td><td>Leadership commitment, risk assessment, risk treatment</td></tr>
+                <tr><td class="nist-id">GV.RR</td><td>Roles &amp; Responsibilities</td><td class="iso-id">5.2, 5.3, A.5.2</td><td>Policy, roles, responsibilities and authorities</td></tr>
+                <tr><td class="nist-id">GV.POL</td><td>Policy</td><td class="iso-id">5.2, A.5.1</td><td>Information security policies</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="content-block">
+        <h2>IDENTIFY (ID) &rarr; ISO 27001 Mapping</h2>
+        <table class="mapping">
+            <thead>
+                <tr><th>NIST CSF Category</th><th>NIST Subcategory</th><th>ISO 27001:2022 Control</th><th>Alignment</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="nist-id">ID.AM</td><td>Asset Management</td><td class="iso-id">A.5.9, A.8.9, A.8.10</td><td>Inventory of information assets, configuration management, data deletion</td></tr>
+                <tr><td class="nist-id">ID.RA</td><td>Risk Assessment</td><td class="iso-id">6.1, 8.2, 8.3</td><td>Risk assessment process, evaluation, treatment</td></tr>
+                <tr><td class="nist-id">ID.IM</td><td>Improvement</td><td class="iso-id">9.1, 9.3, 10.1</td><td>Monitoring, internal audit, continual improvement</td></tr>
+                <tr><td class="nist-id">ID.SC</td><td>Supply Chain Risk</td><td class="iso-id">A.5.19, A.5.20, A.5.21, A.5.22, A.5.23</td><td>Supplier relationships, security in agreements, addressing supply chain</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="content-block">
+        <h2>PROTECT (PR) &rarr; ISO 27001 Mapping</h2>
+        <table class="mapping">
+            <thead>
+                <tr><th>NIST CSF Category</th><th>NIST Subcategory</th><th>ISO 27001:2022 Control</th><th>Alignment</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="nist-id">PR.AC</td><td>Access Control</td><td class="iso-id">A.5.15, A.5.16, A.8.2, A.8.3, A.8.5</td><td>Access rights, privileged access, user authentication, information access restriction</td></tr>
+                <tr><td class="nist-id">PR.AT</td><td>Awareness &amp; Training</td><td class="iso-id">A.6.3</td><td>Information security awareness and training</td></tr>
+                <tr><td class="nist-id">PR.DS</td><td>Data Security</td><td class="iso-id">A.8.10, A.8.11, A.8.12, A.8.24</td><td>Data masking, secrecy of authentication, use of cryptography, use of cryptography for storage</td></tr>
+                <tr><td class="nist-id">PR.PS</td><td>Process &amp; Procedures</td><td class="iso-id">A.5.1, A.5.37, A.8.25</td><td>Policies, secure development lifecycle, secure development</td></tr>
+                <tr><td class="nist-id">PR.IP</td><td>Information Protection</td><td class="iso-id">A.7.1, A.7.2, A.7.3, A.7.4</td><td>Physical security, equipment, media handling</td></tr>
+                <tr><td class="nist-id">PR.MA</td><td>Maintenance</td><td class="iso-id">A.8.8, A.8.9</td><td>Management of technical vulnerabilities, configuration management</td></tr>
+                <tr><td class="nist-id">PR.PT</td><td>Technology</td><td class="iso-id">A.8.1, A.8.15, A.8.16, A.8.20</td><td>User endpoint devices, logging, monitoring activities, networks</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="content-block">
+        <h2>DETECT (DE) &rarr; ISO 27001 Mapping</h2>
+        <table class="mapping">
+            <thead>
+                <tr><th>NIST CSF Category</th><th>NIST Subcategory</th><th>ISO 27001:2022 Control</th><th>Alignment</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="nist-id">DE.CM</td><td>Continuous Monitoring</td><td class="iso-id">A.8.15, A.8.16</td><td>Logging, monitoring activities</td></tr>
+                <tr><td class="nist-id">DE.AE</td><td>Adverse Events Analysis</td><td class="iso-id">A.5.24, A.5.25</td><td>Information security incident management, assessment and decision on events</td></tr>
+                <tr><td class="nist-id">DE.DP</td><td>Detection Processes</td><td class="iso-id">A.8.15, A.8.16</td><td>Event logging, monitoring</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="content-block">
+        <h2>RESPOND (RS) &rarr; ISO 27001 Mapping</h2>
+        <table class="mapping">
+            <thead>
+                <tr><th>NIST CSF Category</th><th>NIST Subcategory</th><th>ISO 27001:2022 Control</th><th>Alignment</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="nist-id">RS.MA</td><td>Incident Management</td><td class="iso-id">A.5.24, A.5.25, A.5.26, A.5.28</td><td>Incident management, assessment, response, collection of evidence</td></tr>
+                <tr><td class="nist-id">RS.AN</td><td>Analysis</td><td class="iso-id">A.5.26</td><td>Response to information security incidents</td></tr>
+                <tr><td class="nist-id">RS.CO</td><td>Communications</td><td class="iso-id">A.5.26, A.5.29</td><td>Incident response, information security during disruption</td></tr>
+                <tr><td class="nist-id">RS.MI</td><td>Mitigation</td><td class="iso-id">A.5.26, A.5.35</td><td>Incident mitigation, independent review of information security</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="content-block">
+        <h2>RECOVER (RC) &rarr; ISO 27001 Mapping</h2>
+        <table class="mapping">
+            <thead>
+                <tr><th>NIST CSF Category</th><th>NIST Subcategory</th><th>ISO 27001:2022 Control</th><th>Alignment</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="nist-id">RC.RP</td><td>Recovery Planning</td><td class="iso-id">A.5.29, A.5.30</td><td>Information security during disruption, ICT readiness for business continuity</td></tr>
+                <tr><td class="nist-id">RC.CO</td><td>Communications</td><td class="iso-id">A.5.26, A.6.1</td><td>Incident communication, internal communication</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="content-block">
+        <h2>How to Use This Mapping</h2>
+        <ol style="margin-left:24px">
+            <li><strong>Unified Control Framework:</strong> Build a single control set that satisfies both NIST CSF and ISO 27001 requirements. Use the mapping to avoid duplicating controls.</li>
+            <li><strong>Compliance Evidence:</strong> When auditors ask for ISO 27001 evidence, cross-reference NIST CSF artifacts. One artifact (e.g., access review log) can satisfy both frameworks.</li>
+            <li><strong>Gap Analysis:</strong> Identify which NIST subcategories lack ISO mapping and require additional controls, and vice versa.</li>
+            <li><strong>Reporting Efficiency:</strong> Map compliance status across both frameworks simultaneously in a single dashboard.</li>
+        </ol>
+
+        <div class="note">
+            <strong>Note:</strong> This mapping is a high-level alignment guide. Some subcategories map partially rather than fully. Always validate against the specific context of your organization and consult the full text of both standards for detailed implementation guidance.
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Diana C. Rodriguez Casas &mdash; GRC Portfolio Template &copy; 2026 | Sanitized for confidentiality</p>
+        <p><a href="../index.html#templates">&larr; Back to Portfolio</a></p>
+    </div>
+</div>
+
+</body>
+</html>
