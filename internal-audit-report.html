@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internal Audit Report Template - Diana Rodriguez Portfolio</title>
+    <style>
+        :root { --primary: #1a365d; --secondary: #2b6cb0; --accent: #38a169; --bg: #f7fafc; --text: #2d3748; --border: #e2e8f0; --red: #e53e3e; --orange: #dd6b20; --yellow: #d69e2e; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; color: var(--text); line-height: 1.7; background: var(--bg); }
+        .header { background: var(--primary); color: white; padding: 40px 20px; text-align: center; }
+        .header a { color: #90cdf4; text-decoration: none; }
+        .container { max-width: 960px; margin: 0 auto; padding: 40px 20px; }
+        .audit-meta { background: white; border-radius: 8px; padding: 24px; margin-bottom: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .audit-meta table { width: 100%; border-collapse: collapse; }
+        .audit-meta td { padding: 8px 12px; border-bottom: 1px solid var(--border); font-size: 0.93rem; }
+        .audit-meta td:first-child { font-weight: 600; width: 180px; }
+        h2 { color: var(--primary); font-size: 1.4rem; margin: 30px 0 14px; border-bottom: 2px solid var(--secondary); padding-bottom: 8px; }
+        h3 { color: var(--secondary); font-size: 1.1rem; margin: 20px 0 10px; }
+        .content-block { background: white; border-radius: 8px; padding: 30px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        p { margin-bottom: 12px; font-size: 0.97rem; }
+        ul, ol { margin: 10px 0 16px 24px; font-size: 0.95rem; }
+        li { margin-bottom: 6px; }
+        table.findings { width: 100%; border-collapse: collapse; margin: 16px 0; }
+        table.findings th { background: var(--primary); color: white; padding: 12px 10px; text-align: left; font-size: 0.85rem; }
+        table.findings td { padding: 10px 10px; border-bottom: 1px solid var(--border); font-size: 0.87rem; vertical-align: top; }
+        table.findings tr:hover td { background: #f7fafc; }
+        .severity-critical { background: #fff5f5; color: var(--red); font-weight: 700; padding: 3px 8px; border-radius: 4px; font-size: 0.82rem; }
+        .severity-high { background: #fffaf0; color: var(--orange); font-weight: 700; padding: 3px 8px; border-radius: 4px; font-size: 0.82rem; }
+        .severity-medium { background: #fffff0; color: var(--yellow); font-weight: 700; padding: 3px 8px; border-radius: 4px; font-size: 0.82rem; }
+        .severity-low { background: #f0fff4; color: var(--accent); font-weight: 700; padding: 3px 8px; border-radius: 4px; font-size: 0.82rem; }
+        .summary-box { background: #f0fff4; border-radius: 8px; padding: 20px; margin: 16px 0; border-left: 4px solid var(--accent); }
+        .summary-box h4 { color: var(--accent); margin-bottom: 8px; }
+        .risk-matrix { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 16px 0; max-width: 500px; }
+        .risk-cell { padding: 10px; text-align: center; border-radius: 6px; font-size: 0.82rem; font-weight: 600; }
+        .note { background: #ebf8ff; border-left: 4px solid var(--secondary); padding: 14px 18px; margin: 16px 0; border-radius: 0 8px 8px 0; font-size: 0.92rem; }
+        .footer { text-align: center; padding: 30px 20px; color: #718096; font-size: 0.85rem; border-top: 1px solid var(--border); margin-top: 40px; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Internal Audit Report Template</h1>
+    <p>Security Compliance Internal Audit &mdash; Framework-Agnostic Structure</p>
+    <p style="margin-top:12px"><a href="../index.html#templates">&larr; Back to Portfolio</a></p>
+</div>
+
+<div class="container">
+
+    <div class="audit-meta">
+        <table>
+            <tr><td>Audit ID</td><td>AUD-[YYYY]-[NNN]</td></tr>
+            <tr><td>Audit Title</td><td>[e.g., Q3 ISO 27001 Internal Audit]</td></tr>
+            <tr><td>Framework(s)</td><td>[ISO 27001 / SOC2 / PCI-DSS / NIST CSF / GDPR]</td></tr>
+            <tr><td>Audit Scope</td><td>[Departments / Systems / Processes covered]</td></tr>
+            <tr><td>Audit Period</td><td>[Start Date] &mdash; [End Date]</td></tr>
+            <tr><td>Lead Auditor</td><td>[Name, Role]</td></tr>
+            <tr><td>Audit Team</td><td>[Names, Roles]</td></tr>
+            <tr><td>Report Date</td><td>[Date]</td></tr>
+            <tr><td>Classification</td><td>[Confidential / Internal]</td></tr>
+        </table>
+    </div>
+
+    <div class="content-block">
+        <h2>1. Executive Summary</h2>
+        <p>[Provide a concise overview of the audit objectives, scope, key findings, overall risk posture, and critical recommendations. This section should be readable by senior management without reviewing the full report.]</p>
+
+        <div class="summary-box">
+            <h4>Audit Outcome Summary</h4>
+            <p><strong>Total Findings:</strong> [N]</p>
+            <p><strong>Critical:</strong> [N] | <strong>High:</strong> [N] | <strong>Medium:</strong> [N] | <strong>Low:</strong> [N]</p>
+            <p><strong>Overall Assessment:</strong> [Satisfactory / Needs Improvement / Unsatisfactory]</p>
+        </div>
+    </div>
+
+    <div class="content-block">
+        <h2>2. Audit Objectives &amp; Scope</h2>
+        <h3>2.1. Objectives</h3>
+        <ul>
+            <li>Verify compliance with [applicable framework/standard] controls</li>
+            <li>Assess the effectiveness of implemented security controls</li>
+            <li>Identify gaps, weaknesses, and areas for improvement</li>
+            <li>Evaluate the maturity of security governance processes</li>
+            <li>Provide actionable remediation recommendations</li>
+        </ul>
+
+        <h3>2.2. Scope</h3>
+        <p>[Define what was in scope and out of scope. Example:]</p>
+        <ul>
+            <li><strong>In Scope:</strong> Access control processes (A.5.15–A.8.2), vulnerability management (A.8.8), data classification (A.8.10), incident management (A.5.24–A.5.28)</li>
+            <li><strong>Out of Scope:</strong> Physical security controls (audited separately), third-party cloud infrastructure (covered in TPRM audit)</li>
+        </ul>
+
+        <h3>2.3. Methodology</h3>
+        <ul>
+            <li>Document review (policies, procedures, evidence artifacts)</li>
+            <li>Interviews with process owners and key personnel</li>
+            <li>Technical testing (access reviews, vulnerability scan validation, configuration checks)</li>
+            <li>Sampling of controls across defined scope</li>
+        </ul>
+    </div>
+
+    <div class="content-block">
+        <h2>3. Findings</h2>
+        <table class="findings">
+            <thead>
+                <tr>
+                    <th style="width:6%">ID</th>
+                    <th style="width:22%">Finding</th>
+                    <th style="width:10%">Severity</th>
+                    <th style="width:15%">Control Ref</th>
+                    <th style="width:22%">Description</th>
+                    <th style="width:15%">Remediation</th>
+                    <th style="width:10%">Owner</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>F-001</td>
+                    <td>[Finding title]</td>
+                    <td><span class="severity-critical">Critical</span></td>
+                    <td>[e.g., A.8.8]</td>
+                    <td>[Detailed description of the gap or weakness]</td>
+                    <td>[Specific remediation action with deadline]</td>
+                    <td>[Role/Name]</td>
+                </tr>
+                <tr>
+                    <td>F-002</td>
+                    <td>[Finding title]</td>
+                    <td><span class="severity-high">High</span></td>
+                    <td>[e.g., A.5.15]</td>
+                    <td>[Detailed description]</td>
+                    <td>[Remediation action]</td>
+                    <td>[Role/Name]</td>
+                </tr>
+                <tr>
+                    <td>F-003</td>
+                    <td>[Finding title]</td>
+                    <td><span class="severity-medium">Medium</span></td>
+                    <td>[e.g., A.8.10]</td>
+                    <td>[Detailed description]</td>
+                    <td>[Remediation action]</td>
+                    <td>[Role/Name]</td>
+                </tr>
+                <tr>
+                    <td>F-004</td>
+                    <td>[Finding title]</td>
+                    <td><span class="severity-low">Low</span></td>
+                    <td>[e.g., A.5.24]</td>
+                    <td>[Detailed description]</td>
+                    <td>[Remediation action]</td>
+                    <td>[Role/Name]</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="content-block">
+        <h2>4. Risk Assessment</h2>
+        <h3>4.1. Risk Rating Criteria</h3>
+        <table class="findings">
+            <thead>
+                <tr><th>Severity</th><th>Definition</th><th>Remediation SLA</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><span class="severity-critical">Critical</span></td><td>Immediate risk to business continuity or data breach; regulatory non-compliance</td><td>24&ndash;72 hours</td></tr>
+                <tr><td><span class="severity-high">High</span></td><td>Significant control gap; potential for material impact if not addressed</td><td>7&ndash;14 days</td></tr>
+                <tr><td><span class="severity-medium">Medium</span></td><td>Moderate control weakness; corrective action needed within standard cycle</td><td>30&ndash;60 days</td></tr>
+                <tr><td><span class="severity-low">Low</span></td><td>Minor improvement opportunity; best practice recommendation</td><td>90 days / Next review cycle</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="content-block">
+        <h2>5. Positive Observations</h2>
+        <p>[Document controls and processes that are well-implemented, as this provides a balanced view and supports certification auditors:]</p>
+        <ul>
+            <li>[e.g., Access review process is mature with 100% coverage of critical systems]</li>
+            <li>[e.g., Vulnerability scanning is performed weekly with automated remediation tracking]</li>
+            <li>[e.g., Security policies are current, reviewed annually, and accessible to all employees]</li>
+        </ul>
+    </div>
+
+    <div class="content-block">
+        <h2>6. Remediation Tracking</h2>
+        <table class="findings">
+            <thead>
+                <tr><th>Finding ID</th><th>Remediation Action</th><th>Owner</th><th>Target Date</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>F-001</td><td>[Action]</td><td>[Owner]</td><td>[Date]</td><td>[Open / In Progress / Closed]</td></tr>
+                <tr><td>F-002</td><td>[Action]</td><td>[Owner]</td><td>[Date]</td><td>[Open / In Progress / Closed]</td></tr>
+                <tr><td>F-003</td><td>[Action]</td><td>[Owner]</td><td>[Date]</td><td>[Open / In Progress / Closed]</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="content-block">
+        <h2>7. Recommendations &amp; Next Steps</h2>
+        <ol>
+            <li>Present findings to Security Committee and obtain remediation commitment from control owners</li>
+            <li>Establish remediation tracking with weekly status updates for Critical and High findings</li>
+            <li>Schedule follow-up audit within [30/60/90] days to validate remediation effectiveness</li>
+            <li>Update risk register to reflect residual risk after remediation</li>
+            <li>Communicate outcomes to relevant stakeholders per governance framework</li>
+        </ol>
+    </div>
+
+    <div class="content-block">
+        <h2>8. Appendix</h2>
+        <h3>A. Audit Evidence Artifacts</h3>
+        <p>[List of documents reviewed, screenshots, interview notes, tool outputs &mdash; reference by artifact ID]</p>
+        <h3>B. Control Coverage Matrix</h3>
+        <p>[Mapping of controls tested vs. framework requirements, showing tested/not-tested/applicable status]</p>
+        <h3>C. Interview Participants</h3>
+        <p>[List of interviewees with roles and dates]</p>
+    </div>
+
+    <div class="note">
+        <strong>Note:</strong> This is a sanitized template. Adapt severity definitions, remediation SLAs, and control references to your organization's risk appetite and applicable regulatory requirements.
+    </div>
+
+    <div class="footer">
+        <p>Diana C. Rodriguez Casas &mdash; GRC Portfolio Template &copy; 2026 | Sanitized for confidentiality</p>
+        <p><a href="../index.html#templates">&larr; Back to Portfolio</a></p>
+    </div>
+</div>
+
+</body>
+</html>
