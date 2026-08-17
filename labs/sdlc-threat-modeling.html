@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Security Headers: Defense-in-depth for static portfolio -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none';">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDLC Threat Modeling | Diana C. Rodriguez Casas | GRC Portfolio</title>
+    <style>
+        :root {
+            --primary: #1a365d;
+            --secondary: #2b6cb0;
+            --accent: #38a169;
+            --bg-light: #f7fafc;
+            --bg-dark: #1a202c;
+            --text: #2d3748;
+            --text-light: #e2e8f0;
+            --border: #e2e8f0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: var(--text); line-height: 1.7; background: var(--bg-light); }
+
+        .hero {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--primary) 50%, var(--secondary) 100%);
+            color: var(--text-light); padding: 80px 20px 60px; text-align: center; position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234a5568' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); opacity: 0.3;
+        }
+        .hero-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+        .hero .breadcrumb { font-size: 0.85rem; color: #90cdf4; margin-bottom: 16px; }
+        .hero .breadcrumb a { color: #90cdf4; text-decoration: none; }
+        .hero .breadcrumb a:hover { text-decoration: underline; }
+        .hero h1 { font-size: 2.4rem; font-weight: 700; margin-bottom: 10px; }
+        .hero .subtitle { font-size: 1.15rem; color: #90cdf4; margin-bottom: 16px; }
+        .hero .tagline { font-size: 1rem; color: #cbd5e0; max-width: 620px; margin: 0 auto; }
+
+        .meta-bar {
+            background: white; border-bottom: 1px solid var(--border); padding: 18px 20px;
+            display: flex; justify-content: center; gap: 32px; flex-wrap: wrap;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .meta-item { text-align: center; }
+        .meta-label { font-size: 0.78rem; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+        .meta-value { font-size: 0.95rem; color: var(--primary); font-weight: 700; }
+
+        .content { max-width: 900px; margin: 0 auto; padding: 50px 20px; }
+        .section-block { margin-bottom: 50px; }
+        .section-block h2 { font-size: 1.5rem; color: var(--primary); margin-bottom: 8px; border-bottom: 3px solid var(--secondary); padding-bottom: 8px; display: inline-block; }
+        .section-block h3 { font-size: 1.15rem; color: var(--secondary); margin: 20px 0 10px; }
+        .section-block p { font-size: 1rem; color: #4a5568; margin-bottom: 14px; }
+
+        .highlight-box {
+            background: white; border-radius: 10px; padding: 28px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06); border-left: 4px solid var(--accent); margin: 20px 0;
+        }
+        .highlight-box h4 { font-size: 0.95rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+        .highlight-box ul { list-style: none; }
+        .highlight-box li { padding: 6px 0; font-size: 0.93rem; color: #4a5568; }
+        .highlight-box li::before { content: '\2713'; color: var(--accent); font-weight: 700; margin-right: 10px; }
+
+        .framework-tags { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
+        .fw-tag { display: inline-block; padding: 5px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; }
+        .fw-green { background: #c6f6d5; color: #22543d; }
+        .fw-blue { background: #bee3f8; color: #2a4365; }
+        .fw-purple { background: #e9d8fd; color: #44337a; }
+        .fw-orange { background: #feebc8; color: #7b341e; }
+
+        .stride-table {
+            width: 100%; border-collapse: collapse; background: white; border-radius: 10px;
+            overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); margin: 20px 0;
+        }
+        .stride-table th { background: var(--primary); color: white; padding: 12px 16px; text-align: left; font-size: 0.88rem; }
+        .stride-table td { padding: 10px 16px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        .stride-table tr:hover td { background: #f7fafc; }
+        .stride-cat { font-weight: 700; color: var(--secondary); }
+
+        .model-card {
+            background: white; border-radius: 10px; padding: 28px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06); border-left: 4px solid var(--secondary); margin: 20px 0;
+        }
+        .model-card h4 { font-size: 0.95rem; color: var(--secondary); font-weight: 700; margin-bottom: 10px; }
+        .model-card ul { list-style: none; }
+        .model-card li { padding: 6px 0; font-size: 0.93rem; color: #4a5568; }
+        .model-card li::before { content: '\25B8'; color: var(--secondary); margin-right: 10px; font-weight: 700; }
+
+        .nav-bar {
+            background: white; border-bottom: 1px solid var(--border); padding: 0 20px;
+            position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .nav-bar ul { display: flex; list-style: none; max-width: 900px; margin: 0 auto; gap: 0; }
+        .nav-bar li a { display: block; padding: 14px 20px; color: var(--text); text-decoration: none; font-size: 0.9rem; font-weight: 500; border-bottom: 3px solid transparent; transition: all 0.2s; }
+        .nav-bar li a:hover { color: var(--secondary); border-bottom-color: var(--secondary); }
+
+        .back-link { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 30px; color: var(--secondary); text-decoration: none; font-size: 0.92rem; font-weight: 500; }
+        .back-link:hover { text-decoration: underline; }
+
+        footer { background: var(--bg-dark); color: #718096; text-align: center; padding: 24px 20px; font-size: 0.85rem; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.8rem; }
+            .meta-bar { gap: 16px; }
+            .content { padding: 30px 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<section class="hero">
+    <div class="hero-content">
+        <div class="breadcrumb"><a href="../index.html">Portfolio</a> &rsaquo; <a href="../index.html#labs">Labs &amp; Coursework</a> &rsaquo; SDLC Threat Modeling</div>
+        <h1>SDLC Threat Modeling &amp; Secure Design</h1>
+        <div class="subtitle">PCI DSS E-Commerce Platform &mdash; Industrias Vaine</div>
+        <p class="tagline">Comprehensive threat modeling for a PCI DSS-compliant e-commerce platform using STRIDE, DREAD, TAMT, abuse cases, data flow diagrams, and CAPEC/CWE mapping.</p>
+    </div>
+</section>
+
+<div class="meta-bar">
+    <div class="meta-item"><div class="meta-label">Role</div><div class="meta-value">Security Architect</div></div>
+    <div class="meta-item"><div class="meta-label">Domain</div><div class="meta-value">Secure SDLC &bull; E-Commerce</div></div>
+    <div class="meta-item"><div class="meta-label">Type</div><div class="meta-value">Master&rsquo;s Coursework</div></div>
+    <div class="meta-item"><div class="meta-label">Compliance</div><div class="meta-value">PCI DSS v4.0</div></div>
+</div>
+
+<div class="nav-bar">
+    <ul>
+        <li><a href="#context">Context</a></li>
+        <li><a href="#stride">STRIDE Analysis</a></li>
+        <li><a href="#dread">DREAD Scoring</a></li>
+        <li><a href="#tamt">TAMT &amp; DFD</a></li>
+        <li><a href="#abuse">Abuse Cases</a></li>
+        <li><a href="#competencies">Competencies</a></li>
+    </ul>
+</div>
+
+<div class="content">
+
+    <a href="../index.html#labs" class="back-link">&larr; Back to Portfolio</a>
+
+    <div class="section-block" id="context">
+        <h2>Project Context</h2>
+        <p>Conducted a comprehensive threat modeling exercise for an e-commerce payment platform developed by <em>Industrias Vaine</em> (fictitious company), requiring <strong>PCI DSS v4.0</strong> compliance for cardholder data processing.</p>
+        <p>The threat model was integrated into the Secure SDLC process from the design phase, applying multiple threat modeling methodologies to ensure defense-in-depth coverage of the payment processing architecture.</p>
+
+        <div class="framework-tags">
+            <span class="fw-tag fw-green">STRIDE</span>
+            <span class="fw-tag fw-blue">DREAD</span>
+            <span class="fw-tag fw-purple">TAMT</span>
+            <span class="fw-tag fw-orange">PCI DSS v4.0</span>
+            <span class="fw-tag fw-green">CAPEC / CWE</span>
+            <span class="fw-tag fw-blue">Abuse Cases</span>
+        </div>
+    </div>
+
+    <div class="section-block" id="stride">
+        <h2>STRIDE Threat Analysis</h2>
+        <p>Applied the STRIDE methodology to systematically identify threats across all six categories for each trust boundary in the e-commerce architecture:</p>
+
+        <table class="stride-table">
+            <thead>
+                <tr>
+                    <th>STRIDE Category</th>
+                    <th>Threat Example</th>
+                    <th>Trust Boundary</th>
+                    <th>CAPEC Ref</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="stride-cat">Spoofing</td>
+                    <td>Attacker impersonates payment gateway API</td>
+                    <td>External &rarr; DMZ</td>
+                    <td>CAPEC-114</td>
+                </tr>
+                <tr>
+                    <td class="stride-cat">Tampering</td>
+                    <td>Modification of transaction amounts in transit</td>
+                    <td>Application &rarr; Payment Processor</td>
+                    <td>CAPEC-31</td>
+                </tr>
+                <tr>
+                    <td class="stride-cat">Repudiation</td>
+                    <td>Customer denies completed purchase</td>
+                    <td>Web App &rarr; Order DB</td>
+                    <td>CAPEC-11</td>
+                </tr>
+                <tr>
+                    <td class="stride-cat">Information Disclosure</td>
+                    <td>PAN exposure in application logs</td>
+                    <td>Log Server &rarr; SIEM</td>
+                    <td>CAPEC-118</td>
+                </tr>
+                <tr>
+                    <td class="stride-cat">Denial of Service</td>
+                    <td>Flood payment API endpoint to disrupt checkout</td>
+                    <td>Internet &rarr; Load Balancer</td>
+                    <td>CAPEC-487</td>
+                </tr>
+                <tr>
+                    <td class="stride-cat">Elevation of Privilege</td>
+                    <td>Admin account compromise via SQL injection</td>
+                    <td>Web App &rarr; Admin Panel</td>
+                    <td>CAPEC-66</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section-block" id="dread">
+        <h2>DREAD Risk Scoring</h2>
+        <p>Applied the DREAD scoring model to quantify and prioritize identified threats based on five dimensions (Damage, Reproducibility, Exploitability, Affected Users, Discoverability), each scored 1&ndash;10:</p>
+
+        <div class="model-card">
+            <h4>DREAD Scoring Dimensions</h4>
+            <ul>
+                <li><strong>Damage potential (D):</strong> How bad would an attack be? (1 = minimal, 10 = catastrophic)</li>
+                <li><strong>Reproducibility (R):</strong> How easy is it to reproduce? (1 = very hard, 10 = always)</li>
+                <li><strong>Exploitability (E):</strong> How easy is it to launch? (1 = advanced skills, 10 = script kiddie)</li>
+                <li><strong>Affected users (A):</strong> How many users impacted? (1 = none, 10 = all)</li>
+                <li><strong>Discoverability (D):</strong> How easy to discover? (1 = very hard, 10 = obvious)</li>
+            </ul>
+        </div>
+
+        <p>Threats scoring above 7.0 average were classified as Critical and required immediate mitigation in the SDLC design phase. Medium threats (4&ndash;7) were scheduled for sprint-level remediation, and low threats (&lt;4) were accepted with monitoring.</p>
+    </div>
+
+    <div class="section-block" id="tamt">
+        <h2>TAMT &amp; Data Flow Diagrams</h2>
+        <p>Used the <strong>Threat Assessment and Mitigation Table (TAMT)</strong> to systematically document each threat, its risk rating, applicable mitigations, and responsible controls:</p>
+
+        <div class="model-card">
+            <h4>TAMT Structure</h4>
+            <ul>
+                <li>Threat ID and STRIDE classification</li>
+                <li>DREAD score and overall risk rating (Critical / Medium / Low)</li>
+                <li>Data Flow Diagram (DFD) element affected (process, data store, external entity, data flow)</li>
+                <li>Trust boundary crossed</li>
+                <li>Applicable mitigations mapped to PCI DSS requirements</li>
+                <li>CWE weakness identifiers for developer reference</li>
+                <li>Status (Open / Mitigated / Accepted)</li>
+            </ul>
+        </div>
+
+        <h3>Data Flow Diagram (DFD) Elements</h3>
+        <p>The DFD modeled the following trust boundaries in the e-commerce architecture:</p>
+        <ul style="list-style: disc; margin-left: 24px; color: #4a5568;">
+            <li>Internet &rarr; Web Application (WAF boundary)</li>
+            <li>Web Application &rarr; Payment Gateway (TLS + mTLS boundary)</li>
+            <li>Application Server &rarr; Database (Internal network boundary)</li>
+            <li>Database &rarr; Log Aggregation (Monitoring boundary)</li>
+            <li>Admin Panel &rarr; Management Functions (Privileged boundary)</li>
+        </ul>
+    </div>
+
+    <div class="section-block" id="abuse">
+        <h2>Abuse Cases</h2>
+        <p>Developed abuse cases as the negative counterpart to use cases, describing how each system function could be misused by malicious actors:</p>
+
+        <div class="model-card">
+            <h4>Example Abuse Cases</h4>
+            <ul>
+                <li><strong>UC-01 / AC-01:</strong> Place Order &rarr; Attacker manipulates price parameter before payment submission</li>
+                <li><strong>UC-02 / AC-02:</strong> Process Payment &rarr; Attacker captures PAN via MITM on unencrypted channel</li>
+                <li><strong>UC-03 / AC-03:</strong> View Order History &rarr; Attacker accesses another user&rsquo;s orders via IDOR</li>
+                <li><strong>UC-04 / AC-04:</strong> Admin Panel Login &rarr; Attacker brute-forces admin credentials with no rate limiting</li>
+                <li><strong>UC-05 / AC-05:</strong> Store Card Data &rarr; Attacker extracts stored PANs via SQL injection in search function</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section-block" id="competencies">
+        <h2>Competencies Demonstrated</h2>
+        <div class="highlight-box">
+            <h4>Secure SDLC &amp; Threat Modeling Skills</h4>
+            <ul>
+                <li>STRIDE threat classification methodology</li>
+                <li>DREAD quantitative risk scoring</li>
+                <li>Threat Assessment and Mitigation Table (TAMT) development</li>
+                <li>Data Flow Diagram (DFD) creation with trust boundary analysis</li>
+                <li>Abuse case development for security requirements</li>
+                <li>CAPEC and CWE catalog mapping for threat intelligence</li>
+                <li>PCI DSS v4.0 compliance requirements for e-commerce</li>
+                <li>Secure-by-design architecture review</li>
+                <li>Security requirements traceability through SDLC phases</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    <p>Diana C. Rodriguez Casas &mdash; Security Compliance &amp; GRC Specialist &copy; 2026. Lab content sanitized &mdash; fictitious organizations used.</p>
+</footer>
+
+</body>
+</html>

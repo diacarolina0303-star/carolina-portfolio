@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Security Headers: Defense-in-depth for static portfolio -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none';">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Security Audit | Diana C. Rodriguez Casas | GRC Portfolio</title>
+    <style>
+        :root {
+            --primary: #1a365d;
+            --secondary: #2b6cb0;
+            --accent: #38a169;
+            --bg-light: #f7fafc;
+            --bg-dark: #1a202c;
+            --text: #2d3748;
+            --text-light: #e2e8f0;
+            --border: #e2e8f0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: var(--text); line-height: 1.7; background: var(--bg-light); }
+
+        .hero {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--primary) 50%, var(--secondary) 100%);
+            color: var(--text-light); padding: 80px 20px 60px; text-align: center; position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234a5568' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); opacity: 0.3;
+        }
+        .hero-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+        .hero .breadcrumb { font-size: 0.85rem; color: #90cdf4; margin-bottom: 16px; }
+        .hero .breadcrumb a { color: #90cdf4; text-decoration: none; }
+        .hero .breadcrumb a:hover { text-decoration: underline; }
+        .hero h1 { font-size: 2.4rem; font-weight: 700; margin-bottom: 10px; }
+        .hero .subtitle { font-size: 1.15rem; color: #90cdf4; margin-bottom: 16px; }
+        .hero .tagline { font-size: 1rem; color: #cbd5e0; max-width: 620px; margin: 0 auto; }
+
+        .meta-bar {
+            background: white; border-bottom: 1px solid var(--border); padding: 18px 20px;
+            display: flex; justify-content: center; gap: 32px; flex-wrap: wrap;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .meta-item { text-align: center; }
+        .meta-label { font-size: 0.78rem; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+        .meta-value { font-size: 0.95rem; color: var(--primary); font-weight: 700; }
+
+        .content { max-width: 900px; margin: 0 auto; padding: 50px 20px; }
+        .section-block { margin-bottom: 50px; }
+        .section-block h2 { font-size: 1.5rem; color: var(--primary); margin-bottom: 8px; border-bottom: 3px solid var(--secondary); padding-bottom: 8px; display: inline-block; }
+        .section-block h3 { font-size: 1.15rem; color: var(--secondary); margin: 20px 0 10px; }
+        .section-block p { font-size: 1rem; color: #4a5568; margin-bottom: 14px; }
+
+        .highlight-box {
+            background: white; border-radius: 10px; padding: 28px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06); border-left: 4px solid var(--accent); margin: 20px 0;
+        }
+        .highlight-box h4 { font-size: 0.95rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+        .highlight-box ul { list-style: none; }
+        .highlight-box li { padding: 6px 0; font-size: 0.93rem; color: #4a5568; }
+        .highlight-box li::before { content: '\2713'; color: var(--accent); font-weight: 700; margin-right: 10px; }
+
+        .framework-tags { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
+        .fw-tag { display: inline-block; padding: 5px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; }
+        .fw-green { background: #c6f6d5; color: #22543d; }
+        .fw-blue { background: #bee3f8; color: #2a4365; }
+        .fw-purple { background: #e9d8fd; color: #44337a; }
+        .fw-orange { background: #feebc8; color: #7b341e; }
+
+        .finding-table {
+            width: 100%; border-collapse: collapse; background: white; border-radius: 10px;
+            overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); margin: 20px 0;
+        }
+        .finding-table th { background: var(--primary); color: white; padding: 12px 16px; text-align: left; font-size: 0.88rem; }
+        .finding-table td { padding: 10px 16px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        .finding-table tr:hover td { background: #f7fafc; }
+        .cvss-critical { color: #e53e3e; font-weight: 700; }
+        .cvss-high { color: #dd6b20; font-weight: 700; }
+        .cvss-medium { color: #d69e2e; font-weight: 700; }
+
+        .remediation-box {
+            background: white; border-radius: 10px; padding: 28px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06); border-left: 4px solid var(--secondary); margin: 20px 0;
+        }
+        .remediation-box h4 { font-size: 0.95rem; color: var(--secondary); font-weight: 700; margin-bottom: 10px; }
+        .remediation-box ul { list-style: none; }
+        .remediation-box li { padding: 6px 0; font-size: 0.93rem; color: #4a5568; }
+        .remediation-box li::before { content: '\25B8'; color: var(--secondary); margin-right: 10px; font-weight: 700; }
+
+        .nav-bar {
+            background: white; border-bottom: 1px solid var(--border); padding: 0 20px;
+            position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .nav-bar ul { display: flex; list-style: none; max-width: 900px; margin: 0 auto; gap: 0; }
+        .nav-bar li a { display: block; padding: 14px 20px; color: var(--text); text-decoration: none; font-size: 0.9rem; font-weight: 500; border-bottom: 3px solid transparent; transition: all 0.2s; }
+        .nav-bar li a:hover { color: var(--secondary); border-bottom-color: var(--secondary); }
+
+        .back-link { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 30px; color: var(--secondary); text-decoration: none; font-size: 0.92rem; font-weight: 500; }
+        .back-link:hover { text-decoration: underline; }
+
+        footer { background: var(--bg-dark); color: #718096; text-align: center; padding: 24px 20px; font-size: 0.85rem; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.8rem; }
+            .meta-bar { gap: 16px; }
+            .content { padding: 30px 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<section class="hero">
+    <div class="hero-content">
+        <div class="breadcrumb"><a href="../index.html">Portfolio</a> &rsaquo; <a href="../index.html#labs">Labs &amp; Coursework</a> &rsaquo; Web Security Audit</div>
+        <h1>Web Application Security Audit</h1>
+        <div class="subtitle">Technical Audit Report &mdash; Librer&iacute;a On-Line S.A.</div>
+        <p class="tagline">Full web application security audit using OWASP ZAP, with CVSS v3.1 scoring, EDR methodology, and structured remediation plan for XSS, CSRF, session management, and file upload vulnerabilities.</p>
+    </div>
+</section>
+
+<div class="meta-bar">
+    <div class="meta-item"><div class="meta-label">Role</div><div class="meta-value">Security Auditor</div></div>
+    <div class="meta-item"><div class="meta-label">Domain</div><div class="meta-value">Web Application Security</div></div>
+    <div class="meta-item"><div class="meta-label">Type</div><div class="meta-value">Master&rsquo;s Coursework</div></div>
+    <div class="meta-item"><div class="meta-label">Tool</div><div class="meta-value">OWASP ZAP</div></div>
+</div>
+
+<div class="nav-bar">
+    <ul>
+        <li><a href="#context">Context</a></li>
+        <li><a href="#methodology">Methodology</a></li>
+        <li><a href="#findings">Findings</a></li>
+        <li><a href="#remediation">Remediation</a></li>
+        <li><a href="#competencies">Competencies</a></li>
+    </ul>
+</div>
+
+<div class="content">
+
+    <a href="../index.html#labs" class="back-link">&larr; Back to Portfolio</a>
+
+    <div class="section-block" id="context">
+        <h2>Audit Context</h2>
+        <p>Conducted a comprehensive web application security audit for <em>Librer&iacute;a On-Line S.A.</em> (fictitious online bookstore), evaluating the security posture of their public-facing web application using automated and manual testing techniques.</p>
+        <p>The audit focused on identifying vulnerabilities that could compromise user data, session integrity, or application availability &mdash; following the <strong>EDR (Exploration, Detection, Response)</strong> methodology and aligned with <strong>OWASP ASVS</strong> (Application Security Verification Standard).</p>
+
+        <div class="framework-tags">
+            <span class="fw-tag fw-green">OWASP ZAP</span>
+            <span class="fw-tag fw-blue">CVSS v3.1</span>
+            <span class="fw-tag fw-purple">ISO 19011</span>
+            <span class="fw-tag fw-orange">OWASP ASVS</span>
+            <span class="fw-tag fw-green">EDR Methodology</span>
+        </div>
+    </div>
+
+    <div class="section-block" id="methodology">
+        <h2>Audit Methodology</h2>
+
+        <h3>Phase 1: Exploration (Reconnaissance)</h3>
+        <p>Application mapping, technology fingerprinting, and attack surface identification using OWASP ZAP&rsquo;s spider and passive scan capabilities. Target URL sanitized to <code>https://app.example.com/</code> for confidentiality.</p>
+
+        <h3>Phase 2: Detection (Active Scanning)</h3>
+        <p>Active vulnerability scanning using OWASP ZAP automated scans, targeting OWASP Top 10 categories: injection flaws, broken authentication, XSS, insecure direct object references, security misconfiguration, and sensitive data exposure.</p>
+
+        <h3>Phase 3: Response (Analysis &amp; Remediation)</h3>
+        <p>Vulnerability validation, CVSS v3.1 severity scoring, root cause analysis, and structured remediation plan development with priority-based timelines.</p>
+    </div>
+
+    <div class="section-block" id="findings">
+        <h2>Key Findings</h2>
+
+        <table class="finding-table">
+            <thead>
+                <tr>
+                    <th>Vulnerability</th>
+                    <th>OWASP Category</th>
+                    <th>CVSS Score</th>
+                    <th>Severity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Cross-Site Scripting (Reflected XSS)</td>
+                    <td>A03:2021 &mdash; Injection</td>
+                    <td>7.5</td>
+                    <td class="cvss-high">High</td>
+                </tr>
+                <tr>
+                    <td>Cross-Site Request Forgery (CSRF)</td>
+                    <td>A01:2021 &mdash; Broken Access Control</td>
+                    <td>8.1</td>
+                    <td class="cvss-high">High</td>
+                </tr>
+                <tr>
+                    <td>Session Fixation Attack</td>
+                    <td>A07:2021 &mdash; Auth Failures</td>
+                    <td>8.0</td>
+                    <td class="cvss-high">High</td>
+                </tr>
+                <tr>
+                    <td>Unrestricted File Upload</td>
+                    <td>A04:2021 &mdash; Insecure Design</td>
+                    <td>9.0</td>
+                    <td class="cvss-critical">Critical</td>
+                </tr>
+                <tr>
+                    <td>Insecure Cookie Flags (Missing HttpOnly/Secure)</td>
+                    <td>A05:2021 &mdash; Security Misconfiguration</td>
+                    <td>5.3</td>
+                    <td class="cvss-medium">Medium</td>
+                </tr>
+                <tr>
+                    <td>Insecure Direct Object Reference (IDOR)</td>
+                    <td>A01:2021 &mdash; Broken Access Control</td>
+                    <td>7.5</td>
+                    <td class="cvss-high">High</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section-block" id="remediation">
+        <h2>Remediation Plan</h2>
+
+        <div class="remediation-box">
+            <h4>Critical &amp; High Priority Remediation</h4>
+            <ul>
+                <li><strong>File Upload:</strong> Implement server-side file type validation, restrict upload directories, rename uploaded files, enforce content-type verification</li>
+                <li><strong>CSRF:</strong> Implement anti-CSRF tokens on all state-changing requests, validate Referer/Origin headers</li>
+                <li><strong>Session Fixation:</strong> Regenerate session ID after authentication, set proper cookie flags (HttpOnly, Secure, SameSite)</li>
+                <li><strong>XSS:</strong> Implement output encoding, Content Security Policy (CSP) headers, input validation and sanitization</li>
+                <li><strong>IDOR:</strong> Implement server-side authorization checks, validate user ownership before resource access</li>
+            </ul>
+        </div>
+
+        <div class="remediation-box">
+            <h4>Medium Priority Remediation</h4>
+            <ul>
+                <li><strong>Cookie Security:</strong> Set HttpOnly, Secure, and SameSite=Strict flags on all session cookies</li>
+                <li><strong>Security Headers:</strong> Implement X-Content-Type-Options, X-Frame-Options, and CSP headers</li>
+                <li><strong>ISO 27002 Controls:</strong> Align remediation with A.8.25 (Secure development), A.8.8 (Management of technical vulnerabilities), A.5.33 (Protection of records)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section-block" id="competencies">
+        <h2>Competencies Demonstrated</h2>
+        <div class="highlight-box">
+            <h4>Technical Audit &amp; GRC Skills</h4>
+            <ul>
+                <li>OWASP ZAP tool proficiency for automated security scanning</li>
+                <li>CVSS v3.1 severity scoring and risk prioritization</li>
+                <li>EDR (Exploration, Detection, Response) audit methodology</li>
+                <li>ISO 19011 audit principles applied to security assessments</li>
+                <li>OWASP ASVS verification standard alignment</li>
+                <li>OWASP Top 10 vulnerability classification</li>
+                <li>Structured remediation plan development with priority-based timelines</li>
+                <li>Security audit reporting and executive communication</li>
+                <li>ISO 27002 control mapping for vulnerability remediation</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    <p>Diana C. Rodriguez Casas &mdash; Security Compliance &amp; GRC Specialist &copy; 2026. Lab content sanitized &mdash; fictitious organizations and example URLs used.</p>
+</footer>
+
+</body>
+</html>

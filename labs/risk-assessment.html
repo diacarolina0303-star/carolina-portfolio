@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Security Headers: Defense-in-depth for static portfolio -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none';">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Risk Assessment | Diana C. Rodriguez Casas | GRC Portfolio</title>
+    <style>
+        :root {
+            --primary: #1a365d;
+            --secondary: #2b6cb0;
+            --accent: #38a169;
+            --bg-light: #f7fafc;
+            --bg-dark: #1a202c;
+            --text: #2d3748;
+            --text-light: #e2e8f0;
+            --border: #e2e8f0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: var(--text); line-height: 1.7; background: var(--bg-light); }
+
+        .hero {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--primary) 50%, var(--secondary) 100%);
+            color: var(--text-light);
+            padding: 80px 20px 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234a5568' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+        .hero-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+        .hero .breadcrumb { font-size: 0.85rem; color: #90cdf4; margin-bottom: 16px; }
+        .hero .breadcrumb a { color: #90cdf4; text-decoration: none; }
+        .hero .breadcrumb a:hover { text-decoration: underline; }
+        .hero h1 { font-size: 2.4rem; font-weight: 700; margin-bottom: 10px; }
+        .hero .subtitle { font-size: 1.15rem; color: #90cdf4; margin-bottom: 16px; }
+        .hero .tagline { font-size: 1rem; color: #cbd5e0; max-width: 620px; margin: 0 auto; }
+
+        .meta-bar {
+            background: white; border-bottom: 1px solid var(--border); padding: 18px 20px;
+            display: flex; justify-content: center; gap: 32px; flex-wrap: wrap;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .meta-item { text-align: center; }
+        .meta-label { font-size: 0.78rem; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+        .meta-value { font-size: 0.95rem; color: var(--primary); font-weight: 700; }
+
+        .content { max-width: 900px; margin: 0 auto; padding: 50px 20px; }
+        .section-block { margin-bottom: 50px; }
+        .section-block h2 { font-size: 1.5rem; color: var(--primary); margin-bottom: 8px; border-bottom: 3px solid var(--secondary); padding-bottom: 8px; display: inline-block; }
+        .section-block h3 { font-size: 1.15rem; color: var(--secondary); margin: 20px 0 10px; }
+        .section-block p { font-size: 1rem; color: #4a5568; margin-bottom: 14px; }
+
+        .highlight-box {
+            background: white; border-radius: 10px; padding: 28px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06); border-left: 4px solid var(--accent); margin: 20px 0;
+        }
+        .highlight-box h4 { font-size: 0.95rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+        .highlight-box ul { list-style: none; }
+        .highlight-box li { padding: 6px 0; font-size: 0.93rem; color: #4a5568; }
+        .highlight-box li::before { content: '\2713'; color: var(--accent); font-weight: 700; margin-right: 10px; }
+
+        .framework-tags { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
+        .fw-tag { display: inline-block; padding: 5px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; }
+        .fw-green { background: #c6f6d5; color: #22543d; }
+        .fw-blue { background: #bee3f8; color: #2a4365; }
+        .fw-purple { background: #e9d8fd; color: #44337a; }
+        .fw-orange { background: #feebc8; color: #7b341e; }
+
+        .risk-table {
+            width: 100%; border-collapse: collapse; background: white; border-radius: 10px;
+            overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); margin: 20px 0;
+        }
+        .risk-table th { background: var(--primary); color: white; padding: 12px 16px; text-align: left; font-size: 0.88rem; }
+        .risk-table td { padding: 10px 16px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        .risk-table tr:hover td { background: #f7fafc; }
+        .risk-high { color: #e53e3e; font-weight: 700; }
+        .risk-medium { color: #d69e2e; font-weight: 700; }
+        .risk-low { color: var(--accent); font-weight: 700; }
+
+        .nav-bar {
+            background: white; border-bottom: 1px solid var(--border); padding: 0 20px;
+            position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .nav-bar ul { display: flex; list-style: none; max-width: 900px; margin: 0 auto; gap: 0; }
+        .nav-bar li a { display: block; padding: 14px 20px; color: var(--text); text-decoration: none; font-size: 0.9rem; font-weight: 500; border-bottom: 3px solid transparent; transition: all 0.2s; }
+        .nav-bar li a:hover { color: var(--secondary); border-bottom-color: var(--secondary); }
+
+        .back-link { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 30px; color: var(--secondary); text-decoration: none; font-size: 0.92rem; font-weight: 500; }
+        .back-link:hover { text-decoration: underline; }
+
+        footer { background: var(--bg-dark); color: #718096; text-align: center; padding: 24px 20px; font-size: 0.85rem; }
+
+        .ptr-box {
+            background: white; border-radius: 10px; padding: 28px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06); border-left: 4px solid var(--secondary); margin: 20px 0;
+        }
+        .ptr-box h4 { font-size: 0.95rem; color: var(--secondary); font-weight: 700; margin-bottom: 10px; }
+        .ptr-box ul { list-style: none; }
+        .ptr-box li { padding: 6px 0; font-size: 0.93rem; color: #4a5568; }
+        .ptr-box li::before { content: '\25B8'; color: var(--secondary); margin-right: 10px; font-weight: 700; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.8rem; }
+            .meta-bar { gap: 16px; }
+            .content { padding: 30px 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<section class="hero">
+    <div class="hero-content">
+        <div class="breadcrumb"><a href="../index.html">Portfolio</a> &rsaquo; <a href="../index.html#labs">Labs &amp; Coursework</a> &rsaquo; Risk Assessment</div>
+        <h1>Enterprise Risk Assessment</h1>
+        <div class="subtitle">Proyecto Alfredo de Gotan &mdash; Industrias Vaine</div>
+        <p class="tagline">Full risk assessment for an AI defense prototype project using eMarisma methodology, ISO 27001:2022 controls, and structured risk treatment plans (PTR).</p>
+    </div>
+</section>
+
+<div class="meta-bar">
+    <div class="meta-item"><div class="meta-label">Role</div><div class="meta-value">Risk Analyst</div></div>
+    <div class="meta-item"><div class="meta-label">Domain</div><div class="meta-value">Defense &bull; AI Prototype</div></div>
+    <div class="meta-item"><div class="meta-label">Type</div><div class="meta-value">Master&rsquo;s Coursework</div></div>
+    <div class="meta-item"><div class="meta-label">Tool</div><div class="meta-value">eMarisma Risk Engine</div></div>
+</div>
+
+<div class="nav-bar">
+    <ul>
+        <li><a href="#context">Context</a></li>
+        <li><a href="#methodology">Methodology</a></li>
+        <li><a href="#risks">Risk Register</a></li>
+        <li><a href="#treatment">Risk Treatment</a></li>
+        <li><a href="#competencies">Competencies</a></li>
+    </ul>
+</div>
+
+<div class="content">
+
+    <a href="../index.html#labs" class="back-link">&larr; Back to Portfolio</a>
+
+    <div class="section-block" id="context">
+        <h2>Project Context</h2>
+        <p>Conducted a comprehensive enterprise risk assessment for <em>Industrias Vaine</em> (fictitious defense contractor), specifically for the <strong>Proyecto Alfredo de Gotan</strong> &mdash; an AI-powered defense prototype initiative.</p>
+        <p>The assessment identified information assets, threat vectors, and vulnerabilities across the project lifecycle, applying a structured risk management approach aligned with <strong>ISO 31000</strong> and mapped to <strong>ISO 27001:2022 Annex A</strong> controls.</p>
+
+        <div class="framework-tags">
+            <span class="fw-tag fw-green">ISO 31000</span>
+            <span class="fw-tag fw-blue">ISO 27001:2022</span>
+            <span class="fw-tag fw-purple">eMarisma</span>
+            <span class="fw-tag fw-orange">Risk Treatment Plans</span>
+        </div>
+    </div>
+
+    <div class="section-block" id="methodology">
+        <h2>Methodology</h2>
+        <p>Risk assessment was performed using the <strong>eMarisma</strong> risk analysis engine, a structured methodology that systematically identifies, evaluates, and prioritizes information security risks:</p>
+
+        <h3>1. Asset Identification &amp; Valuation</h3>
+        <p>Cataloged all information assets within the project scope (AI models, defense data, prototype schematics, development infrastructure) and assigned valuation based on confidentiality, integrity, and availability criteria.</p>
+
+        <h3>2. Threat &amp; Vulnerability Analysis</h3>
+        <p>Identified threat sources (external adversaries, insider threats, natural disasters, technical failures) and mapped vulnerabilities per asset using eMarisma&rsquo;s threat taxonomy.</p>
+
+        <h3>3. Risk Evaluation (Probability &times; Impact)</h3>
+        <p>Calculated risk levels using the eMarisma risk matrix, producing qualitative risk ratings for each asset-threat-vulnerability combination.</p>
+
+        <h3>4. Control Mapping (ISO 27001:2022)</h3>
+        <p>Mapped each identified risk to relevant ISO 27001:2022 Annex A controls, identifying gaps where existing controls were insufficient.</p>
+
+        <h3>5. Risk Treatment Plans (PTR)</h3>
+        <p>Developed structured Risk Treatment Plans (Planes de Tratamiento de Riesgos) for each unacceptable risk, specifying mitigation actions, responsible parties, timelines, and residual risk acceptance criteria.</p>
+    </div>
+
+    <div class="section-block" id="risks">
+        <h2>Risk Register Highlights</h2>
+        <p>Representative risk findings from the assessment (sanitized for portfolio presentation):</p>
+
+        <table class="risk-table">
+            <thead>
+                <tr>
+                    <th>Asset Category</th>
+                    <th>Threat Vector</th>
+                    <th>Vulnerability</th>
+                    <th>Risk Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>AI Defense Models</td>
+                    <td>Unauthorized access / Data exfiltration</td>
+                    <td>Insufficient access controls on model repository</td>
+                    <td class="risk-high">Critical</td>
+                </tr>
+                <tr>
+                    <td>Prototype Schematics</td>
+                    <td>Industrial espionage</td>
+                    <td>Lack of DLP and classification controls</td>
+                    <td class="risk-high">High</td>
+                </tr>
+                <tr>
+                    <td>Development Infrastructure</td>
+                    <td>Supply chain compromise</td>
+                    <td>Unvetted third-party components</td>
+                    <td class="risk-high">High</td>
+                </tr>
+                <tr>
+                    <td>AI Training Data</td>
+                    <td>Data poisoning</td>
+                    <td>No integrity validation on training datasets</td>
+                    <td class="risk-medium">Medium</td>
+                </tr>
+                <tr>
+                    <td>Project Communications</td>
+                    <td>Interception / Leakage</td>
+                    <td>Unencrypted internal communications</td>
+                    <td class="risk-medium">Medium</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section-block" id="treatment">
+        <h2>Risk Treatment Plans (PTR)</h2>
+        <p>For each unacceptable risk, a structured PTR was developed specifying:</p>
+
+        <div class="ptr-box">
+            <h4>PTR Structure Elements</h4>
+            <ul>
+                <li>Risk reference and current risk level</li>
+                <li>Treatment option selected: Mitigate, Transfer, Accept, or Avoid</li>
+                <li>Specific ISO 27001:2022 controls selected for implementation</li>
+                <li>Detailed mitigation actions and control implementation steps</li>
+                <li>Expected residual risk after treatment</li>
+                <li>Responsible party and implementation timeline</li>
+                <li>Verification and monitoring procedures</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <h4>Key Controls Applied</h4>
+            <ul>
+                <li>A.6.1.2 &mdash; Information security in project management</li>
+                <li>A.8.1.1 &mdash; Inventory of information and associated processing facilities</li>
+                <li>A.8.2.1 &mdash; Classification of information</li>
+                <li>A.8.3.1 &mdash; Physical media handling (physical controls for prototypes)</li>
+                <li>A.5.14 &mdash; Information transfer (secure communications)</li>
+                <li>A.5.23 &mdash; Information security in cloud services</li>
+                <li>A.8.9 &mdash; Configuration management</li>
+                <li>A.8.28 &mdash; Secure coding (secure AI development practices)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section-block" id="competencies">
+        <h2>Competencies Demonstrated</h2>
+        <div class="highlight-box">
+            <h4>GRC &amp; Risk Management Skills</h4>
+            <ul>
+                <li>Full enterprise risk assessment lifecycle execution</li>
+                <li>eMarisma risk analysis tool proficiency</li>
+                <li>ISO 31000 risk management methodology application</li>
+                <li>ISO 27001:2022 control selection and mapping</li>
+                <li>Risk Treatment Plan (PTR) development</li>
+                <li>Asset identification, valuation, and classification</li>
+                <li>Threat and vulnerability analysis for AI/defense projects</li>
+                <li>Residual risk acceptance and monitoring procedures</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    <p>Diana C. Rodriguez Casas &mdash; Security Compliance &amp; GRC Specialist &copy; 2026. Lab content sanitized &mdash; fictitious organizations used.</p>
+</footer>
+
+</body>
+</html>

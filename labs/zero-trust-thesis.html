@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Security Headers: Defense-in-depth for static portfolio -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none';">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zero Trust + GenAI Cloud Audit | Final Capstone Project | Diana C. Rodriguez Casas</title>
+    <style>
+        :root {
+            --primary: #1a365d;
+            --secondary: #2b6cb0;
+            --accent: #38a169;
+            --accent-gold: #d69e2e;
+            --bg-light: #f7fafc;
+            --bg-dark: #1a202c;
+            --text: #2d3748;
+            --text-light: #e2e8f0;
+            --border: #e2e8f0;
+            --red: #e53e3e;
+            --orange: #dd6b20;
+            --yellow: #d69e2e;
+            --green: #38a169;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: var(--text); line-height: 1.7; background: var(--bg-light); }
+
+        .hero {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--primary) 40%, #2c5282 60%, var(--secondary) 100%);
+            color: var(--text-light); padding: 80px 20px 60px; text-align: center; position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nODAnIGhlaWdodD0nODAnIHZpZXdCb3g9JzAgMCA4MCA4MCcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJz48ZyBmaWxsPSdub25lJyBmaWxsLXJ1bGU9J2V2ZW5vZGQnPjxnIGZpbGw9JyM0YTU1NjgnIGZpbGwtb3BhY2l0eT0nMC4wOCc+PHBhdGggZD0nTTUwIDUwVjM1aC01djE1SDMwdjVoMTV2MTVoNVY1NWgxNXYtNUg1MHpNNTAgMTBWMGgtNXYxMEgzMHY1aDE1djEwaDVWMTVoMTV2LTVINTB6TTEwIDUwVjM1SDV2MTVILTEwdjVINXYxNWg1VjU1aDE1di01SDEwek0xMCAxMFYwSDV2MTBILTEwdjVINXYxMGg1VjE1aDE1di01SDEweicvPjwvZz48L2c+PC9zdmc+"); opacity: 0.4;
+        }
+        .hero-content { position: relative; z-index: 1; max-width: 840px; margin: 0 auto; }
+        .hero .breadcrumb { font-size: 0.85rem; color: #90cdf4; margin-bottom: 16px; }
+        .hero .breadcrumb a { color: #90cdf4; text-decoration: none; }
+        .hero .breadcrumb a:hover { text-decoration: underline; }
+        .hero h1 { font-size: 2.4rem; font-weight: 700; margin-bottom: 6px; }
+        .hero .subtitle { font-size: 1.1rem; color: #90cdf4; margin-bottom: 8px; }
+        .hero .featured-badge { display: inline-block; background: var(--accent-gold); color: #1a202c; padding: 4px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 14px; }
+        .hero .tagline { font-size: 1rem; color: #cbd5e0; max-width: 650px; margin: 0 auto; }
+
+        .meta-bar {
+            background: white; border-bottom: 1px solid var(--border); padding: 18px 20px;
+            display: flex; justify-content: center; gap: 32px; flex-wrap: wrap;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .meta-item { text-align: center; }
+        .meta-label { font-size: 0.78rem; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+        .meta-value { font-size: 0.95rem; color: var(--primary); font-weight: 700; }
+
+        .content { max-width: 960px; margin: 0 auto; padding: 50px 20px; }
+        .section-block { margin-bottom: 50px; }
+        .section-block h2 { font-size: 1.5rem; color: var(--primary); margin-bottom: 16px; border-bottom: 3px solid var(--accent-gold); padding-bottom: 8px; display: inline-block; }
+        .section-block h3 { font-size: 1.15rem; color: var(--secondary); margin: 24px 0 12px; }
+
+        .framework-tags { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
+        .fw-tag { display: inline-block; padding: 5px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; }
+        .fw-green { background: #c6f6d5; color: #22543d; }
+        .fw-blue { background: #bee3f8; color: #2a4365; }
+        .fw-purple { background: #e9d8fd; color: #44337a; }
+        .fw-orange { background: #feebc8; color: #7b341e; }
+        .fw-gold { background: #fefcbf; color: #744210; border: 1px solid #d69e2e; }
+        .fw-red { background: #fed7d7; color: #742a2a; }
+
+        .nav-bar {
+            background: white; border-bottom: 1px solid var(--border); padding: 0 20px;
+            position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .nav-bar ul { display: flex; list-style: none; max-width: 900px; margin: 0 auto; gap: 0; flex-wrap: wrap; justify-content: center; }
+        .nav-bar li a { display: block; padding: 14px 16px; color: var(--text); text-decoration: none; font-size: 0.88rem; font-weight: 500; border-bottom: 3px solid transparent; }
+        .nav-bar li a:hover { color: var(--secondary); border-bottom-color: var(--secondary); }
+
+        .back-link { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 30px; color: var(--secondary); text-decoration: none; font-size: 0.92rem; font-weight: 500; }
+        .back-link:hover { text-decoration: underline; }
+
+        .ip-notice {
+            background: #fffbeb; border: 1px solid #d69e2e; border-radius: 8px; padding: 16px 20px;
+            margin: 20px 0; font-size: 0.88rem; color: #744210; display: flex; align-items: flex-start; gap: 10px;
+        }
+        .ip-notice strong { color: #975a16; }
+
+        /* Visual infographic styles */
+        .infographic-container {
+            display: flex; justify-content: center; margin: 24px 0;
+        }
+        .infographic-container img {
+            max-width: 100%; height: auto; border-radius: 10px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        /* KPI row */
+        .kpi-row {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px; margin: 24px 0;
+        }
+        .kpi-card {
+            background: white; border-radius: 10px; padding: 20px; text-align: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06); border-top: 4px solid var(--secondary);
+        }
+        .kpi-card.kpi-danger { border-top-color: var(--red); }
+        .kpi-card.kpi-warn { border-top-color: var(--orange); }
+        .kpi-card.kpi-ok { border-top-color: var(--green); }
+        .kpi-card.kpi-gold { border-top-color: var(--accent-gold); }
+        .kpi-number { font-size: 2rem; font-weight: 800; color: var(--primary); line-height: 1.1; }
+        .kpi-card.kpi-danger .kpi-number { color: var(--red); }
+        .kpi-card.kpi-warn .kpi-number { color: var(--orange); }
+        .kpi-card.kpi-ok .kpi-number { color: var(--green); }
+        .kpi-card.kpi-gold .kpi-number { color: var(--accent-gold); }
+        .kpi-label { font-size: 0.8rem; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; margin-top: 6px; }
+        .kpi-detail { font-size: 0.82rem; color: #a0aec0; margin-top: 4px; }
+
+        /* Scoring bar chart */
+        .score-chart { display: flex; flex-direction: column; gap: 12px; margin: 24px 0; }
+        .score-row { display: flex; align-items: center; gap: 12px; }
+        .score-label { min-width: 110px; font-size: 0.85rem; font-weight: 600; color: var(--text); text-align: right; }
+        .score-bar-track { flex: 1; height: 32px; background: #edf2f7; border-radius: 6px; position: relative; overflow: hidden; }
+        .score-bar-fill { height: 100%; border-radius: 6px; display: flex; align-items: center; padding-left: 12px; font-size: 0.85rem; font-weight: 700; color: white; min-width: 40px; }
+        .score-bar-fill.bar-critical { background: linear-gradient(90deg, var(--red), #c53030); }
+        .score-bar-fill.bar-high { background: linear-gradient(90deg, var(--orange), #c05621); }
+        .score-bar-fill.bar-medium { background: linear-gradient(90deg, var(--yellow), #b7791f); }
+        .score-bar-fill.bar-low { background: linear-gradient(90deg, var(--green), #276749); }
+        .score-decision { min-width: 60px; font-size: 0.82rem; font-weight: 700; text-align: center; padding: 4px 10px; border-radius: 4px; }
+        .score-decision.deny { background: #fed7d7; color: #742a2a; }
+        .score-decision.allow { background: #c6f6d5; color: #22543d; }
+
+        /* Timeline / process steps */
+        .process-steps {
+            display: flex; flex-direction: column; gap: 0; margin: 24px 0; position: relative;
+        }
+        .process-step {
+            display: flex; align-items: flex-start; gap: 16px; padding-bottom: 24px; position: relative;
+        }
+        .process-step::before {
+            content: ''; position: absolute; left: 19px; top: 40px; bottom: 0; width: 2px;
+            background: linear-gradient(to bottom, var(--secondary), var(--accent));
+        }
+        .process-step:last-child::before { display: none; }
+        .step-number {
+            width: 40px; height: 40px; border-radius: 50%; background: var(--secondary);
+            color: white; display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 1rem; flex-shrink: 0;
+        }
+        .step-content { flex: 1; }
+        .step-title { font-size: 1rem; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+        .step-detail { font-size: 0.9rem; color: #718096; }
+
+        /* Compact cards */
+        .compact-cards {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px; margin: 24px 0;
+        }
+        .compact-card {
+            background: white; border-radius: 10px; padding: 22px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            border-left: 4px solid var(--accent-gold);
+        }
+        .compact-card h4 { font-size: 0.95rem; color: var(--accent-gold); font-weight: 700; margin-bottom: 8px; }
+        .compact-card ul { list-style: none; }
+        .compact-card li { padding: 4px 0; font-size: 0.88rem; color: #4a5568; }
+        .compact-card li::before { content: '\25B8'; color: var(--accent-gold); margin-right: 8px; font-weight: 700; }
+
+        .compact-card.card-green { border-left-color: var(--accent); }
+        .compact-card.card-green h4 { color: var(--accent); }
+        .compact-card.card-green li::before { color: var(--accent); }
+
+        .compact-card.card-blue { border-left-color: var(--secondary); }
+        .compact-card.card-blue h4 { color: var(--secondary); }
+        .compact-card.card-blue li::before { color: var(--secondary); }
+
+        .compact-card.card-red { border-left-color: var(--red); }
+        .compact-card.card-red h4 { color: var(--red); }
+        .compact-card.card-red li::before { color: var(--red); }
+
+        /* Severity table */
+        .results-table {
+            width: 100%; border-collapse: collapse; background: white; border-radius: 10px;
+            overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); margin: 20px 0;
+        }
+        .results-table th { background: var(--primary); color: white; padding: 12px 16px; text-align: left; font-size: 0.88rem; }
+        .results-table td { padding: 10px 16px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        .results-table tr:hover td { background: #f7fafc; }
+
+        /* Competency badges */
+        .competency-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px; margin: 20px 0;
+        }
+        .competency-badge {
+            background: white; border-radius: 8px; padding: 12px 16px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05); font-size: 0.88rem;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .competency-badge .cb-icon { color: var(--secondary); font-size: 1.1rem; font-weight: 700; }
+
+        footer { background: var(--bg-dark); color: #718096; text-align: center; padding: 24px 20px; font-size: 0.85rem; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.8rem; }
+            .meta-bar { gap: 16px; }
+            .content { padding: 30px 16px; }
+            .kpi-row { grid-template-columns: repeat(2, 1fr); }
+            .score-row { flex-wrap: wrap; }
+            .score-label { min-width: 80px; font-size: 0.78rem; }
+            .nav-bar ul { gap: 0; }
+            .nav-bar li a { padding: 10px 10px; font-size: 0.8rem; }
+            .compact-cards { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<section class="hero">
+    <div class="hero-content">
+        <div class="breadcrumb"><a href="../index.html">Portfolio</a> &rsaquo; <a href="../index.html#labs">Strategic Projects</a> &rsaquo; Final Capstone Project</div>
+        <span class="featured-badge">&starf; Featured Project</span>
+        <h1>Zero Trust + GenAI Cloud Audit</h1>
+        <div class="subtitle">Final Capstone Project &mdash; Modelo Zero Trust para la detecci&oacute;n y priorizaci&oacute;n de riesgos de acceso en entornos cloud</div>
+        <p class="tagline">Functional Python prototype combining Zero Trust architecture with a locally-hosted LLM to automate cloud security audits across ISO 27001, NIST SP 800-207, and DORA.</p>
+    </div>
+</section>
+
+<div class="meta-bar">
+    <div class="meta-item"><div class="meta-label">Type</div><div class="meta-value">Final Capstone Project</div></div>
+    <div class="meta-item"><div class="meta-label">Domain</div><div class="meta-value">Zero Trust &bull; Cloud &bull; GenAI</div></div>
+    <div class="meta-item"><div class="meta-label">Stack</div><div class="meta-value">Python &bull; LLM (Local)</div></div>
+    <div class="meta-item"><div class="meta-label">Status</div><div class="meta-value">Functional Prototype</div></div>
+</div>
+
+<div class="nav-bar">
+    <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#crosswalk">Cross-Walk</a></li>
+        <li><a href="#bias">LLM Bias</a></li>
+        <li><a href="#competencies">Competencies</a></li>
+    </ul>
+</div>
+
+<div class="content">
+
+    <a href="../index.html#labs" class="back-link">&larr; Back to Portfolio</a>
+
+    <div class="ip-notice">
+        <strong>&#9888; Intellectual Property Notice:</strong> This page presents a high-level overview of the capstone project. Methodology details, source code, and prompt engineering strategies are not disclosed to protect intellectual property.
+    </div>
+
+    <!-- ============ OVERVIEW ============ -->
+    <div class="section-block" id="overview">
+        <h2>Project Overview</h2>
+
+        <!-- KPI Row: Key metrics at a glance -->
+        <div class="kpi-row">
+            <div class="kpi-card kpi-gold">
+                <div class="kpi-number">5</div>
+                <div class="kpi-label">Cloud Architectures Tested</div>
+                <div class="kpi-detail">Azure &bull; GCP &bull; AWS &bull; Multi &bull; Remediated</div>
+            </div>
+            <div class="kpi-card kpi-danger">
+                <div class="kpi-number">0.80</div>
+                <div class="kpi-label">Highest Risk Score</div>
+                <div class="kpi-detail">GCP &amp; AWS &mdash; DENY</div>
+            </div>
+            <div class="kpi-card kpi-ok">
+                <div class="kpi-number">0.32</div>
+                <div class="kpi-label">Post-Remediation Score</div>
+                <div class="kpi-detail">Azure Remediated &mdash; ALLOW</div>
+            </div>
+            <div class="kpi-card kpi-warn">
+                <div class="kpi-number">94%</div>
+                <div class="kpi-label">Detection Accuracy</div>
+                <div class="kpi-detail">Critical access risks flagged</div>
+            </div>
+            <div class="kpi-card kpi-gold">
+                <div class="kpi-number">3</div>
+                <div class="kpi-label">Frameworks Mapped</div>
+                <div class="kpi-detail">ISO 27001 &bull; NIST &bull; DORA</div>
+            </div>
+        </div>
+
+        <div class="framework-tags">
+            <span class="fw-tag fw-gold">NIST SP 800-207</span>
+            <span class="fw-tag fw-green">ISO 27001:2022</span>
+            <span class="fw-tag fw-blue">DORA (EU 2022/2554)</span>
+            <span class="fw-tag fw-purple">Zero Trust Architecture</span>
+            <span class="fw-tag fw-orange">GenAI-Assisted Audit</span>
+            <span class="fw-tag fw-blue">ISO 31000</span>
+        </div>
+
+
+        <h3>Problem Statement</h3>
+        <p style="font-size: 1rem; color: #4a5568;">Organizations operate on <strong>implicit trust</strong> &mdash; being inside the network perimeter grants access without additional controls. This enables lateral movement and exploitation of IAM vulnerabilities. The capstone project proposes a technical model to identify access risks and guide their transition to Zero Trust.</p>
+
+        <h3>Research Contribution</h3>
+        <p style="font-size: 1rem; color: #4a5568; margin-bottom: 12px;">A locally-deployed LLM integrated into a Policy Decision Point (PDP) architecture to:</p>
+        <ul style="list-style: none; color: #4a5568;">
+            <li style="padding: 5px 0;">&#10003; Automatically assess cloud architectures against Zero Trust principles</li>
+            <li style="padding: 5px 0;">&#10003; Prioritize access risks using contextual severity scoring (0&ndash;1 continuous scale)</li>
+            <li style="padding: 5px 0;">&#10003; Generate structured JSON audit reports with DENY/ALLOW policy decisions</li>
+            <li style="padding: 5px 0;">&#10003; Cross-correlate findings across ISO 27001, NIST SP 800-207, DORA &amp; ISO 31000</li>
+            <li style="padding: 5px 0;">&#10003; Produce PlantUML architecture diagrams visualizing hardened configurations</li>
+            <li style="padding: 5px 0;">&#10003; Provide progressive hardening recommendations per component</li>
+        </ul>
+    </div>
+
+    <!-- ============ METHODOLOGY ============ -->
+    <div class="section-block" id="methodology">
+        <h2>Research Methodology</h2>
+
+        <div class="process-steps">
+            <div class="process-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-title">Documentary Collection</div>
+                    <div class="step-detail">Extensive review of NIST SP 800-207, ISO 27001 controls, DORA operational requirements, and Verizon DBIR 2025 incident metrics</div>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-title">System Architecture &amp; Python Automation</div>
+                    <div class="step-detail">Design of structural logic and programming of logical components using Python, structuring control rules for NIST, ISO 27001, and DORA</div>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-title">LLM Integration</div>
+                    <div class="step-detail">Connection with local LM Studio using Meta-Llama-3.1-8B-Instruct for contextual interpretation and risk prioritization</div>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <div class="step-title">Practical Validation</div>
+                    <div class="step-detail">Application across 5 cloud architecture scenarios (Azure, GCP, AWS, Multi-Cloud, Azure Remediated)</div>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <div class="step-title">Results Synthesis</div>
+                    <div class="step-detail">Structured JSON output format for interpretability and traceability</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ INDUSTRY CONTEXT ============ -->
+    <div class="section-block" id="context">
+        <h2>Industry Context</h2>
+
+        <!-- SVG Infographic: Industry Stats -->
+        <div class="infographic-container">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA4ODAgMzAwJyBmb250LWZhbWlseT0nU2Vnb2UgVUksIHN5c3RlbS11aSwgc2Fucy1zZXJpZic+PHJlY3Qgd2lkdGg9Jzg4MCcgaGVpZ2h0PSczMDAnIHJ4PScxMicgZmlsbD0nI2Y3ZmFmYycvPjx0ZXh0IHg9JzQ0MCcgeT0nMzUnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyMxYTM2NWQnIGZvbnQtc2l6ZT0nMS4xNXJlbScgZm9udC13ZWlnaHQ9JzgwMCc+V2h5IFplcm8gVHJ1c3Q/IChWZXJpem9uIERCSVIgMjAyNSwgWmVyb1RocmVhdCAyMDI2KTwvdGV4dD48cmVjdCB4PSczMCcgeT0nNjAnIHdpZHRoPScxNjAnIGhlaWdodD0nMTAwJyByeD0nMTAnIGZpbGw9JyNmZmY1ZjUnIHN0cm9rZT0nI2U1M2UzZScgc3Ryb2tlLXdpZHRoPScyJy8+PHRleHQgeD0nMTEwJyB5PSc5NScgdGV4dC1hbmNob3I9J21pZGRsZScgZmlsbD0nI2U1M2UzZScgZm9udC1zaXplPScycmVtJyBmb250LXdlaWdodD0nODAwJz42NSU8L3RleHQ+PHRleHQgeD0nMTEwJyB5PScxMTUnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyM3NDIxMmEnIGZvbnQtc2l6ZT0nMC43OHJlbScgZm9udC13ZWlnaHQ9JzYwMCc+QnJlYWNoZXMgZnJvbTwvdGV4dD48dGV4dCB4PScxMTAnIHk9JzEzMCcgdGV4dC1hbmNob3I9J21pZGRsZScgZmlsbD0nIzc0MjEyYScgZm9udC1zaXplPScwLjc4cmVtJyBmb250LXdlaWdodD0nNjAwJz5pbmFkZXF1YXRlIGFjY2VzcyBjb250cm9sczwvdGV4dD48cmVjdCB4PScyMjAnIHk9JzYwJyB3aWR0aD0nMTYwJyBoZWlnaHQ9JzEwMCcgcng9JzEwJyBmaWxsPScjZmZmYWYwJyBzdHJva2U9JyNkZDZiMjAnIHN0cm9rZS13aWR0aD0nMicvPjx0ZXh0IHg9JzMwMCcgeT0nOTUnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyNkZDZiMjAnIGZvbnQtc2l6ZT0nMnJlbScgZm9udC13ZWlnaHQ9JzgwMCc+NDklPC90ZXh0Pjx0ZXh0IHg9JzMwMCcgeT0nMTE1JyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPScjN2IzNDFlJyBmb250LXNpemU9JzAuNzhyZW0nIGZvbnQtd2VpZ2h0PSc2MDAnPkNvbXByb21pc2VzIGludm9sdmU8L3RleHQ+PHRleHQgeD0nMzAwJyB5PScxMzAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyM3YjM0MWUnIGZvbnQtc2l6ZT0nMC43OHJlbScgZm9udC13ZWlnaHQ9JzYwMCc+aWRlbnRpdHkgYWJ1c2UgdmVjdG9yczwvdGV4dD48cmVjdCB4PSc0MTAnIHk9JzYwJyB3aWR0aD0nMTYwJyBoZWlnaHQ9JzEwMCcgcng9JzEwJyBmaWxsPScjZmZmZmYwJyBzdHJva2U9JyNkNjllMmUnIHN0cm9rZS13aWR0aD0nMicvPjx0ZXh0IHg9JzQ5MCcgeT0nOTUnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyNkNjllMmUnIGZvbnQtc2l6ZT0nMnJlbScgZm9udC13ZWlnaHQ9JzgwMCc+MzIlPC90ZXh0Pjx0ZXh0IHg9JzQ5MCcgeT0nMTE1JyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPScjNzQ0MjEwJyBmb250LXNpemU9JzAuNzhyZW0nIGZvbnQtd2VpZ2h0PSc2MDAnPkJyZWFjaGVzIGV4cGxvaXQ8L3RleHQ+PHRleHQgeD0nNDkwJyB5PScxMzAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyM3NDQyMTAnIGZvbnQtc2l6ZT0nMC43OHJlbScgZm9udC13ZWlnaHQ9JzYwMCc+c3RvbGVuL3JldXNlZCBjcmVkZW50aWFsczwvdGV4dD48cmVjdCB4PSc2MDAnIHk9JzYwJyB3aWR0aD0nMTYwJyBoZWlnaHQ9JzEwMCcgcng9JzEwJyBmaWxsPScjZjBmZmY0JyBzdHJva2U9JyMzOGExNjknIHN0cm9rZS13aWR0aD0nMicvPjx0ZXh0IHg9JzY4MCcgeT0nOTUnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyMzOGExNjknIGZvbnQtc2l6ZT0nMS41cmVtJyBmb250LXdlaWdodD0nODAwJz4kODhCPC90ZXh0Pjx0ZXh0IHg9JzY4MCcgeT0nMTE1JyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPScjMjI1NDNkJyBmb250LXNpemU9JzAuNzhyZW0nIGZvbnQtd2VpZ2h0PSc2MDAnPlplcm8gVHJ1c3QgbWFya2V0PC90ZXh0Pjx0ZXh0IHg9JzY4MCcgeT0nMTMwJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPScjMjI1NDNkJyBmb250LXNpemU9JzAuNzhyZW0nIGZvbnQtd2VpZ2h0PSc2MDAnPmJ5IDIwMzAgKENBR1IgMTQlKTwvdGV4dD48cmVjdCB4PSczMCcgeT0nMTg1JyB3aWR0aD0nNzMwJyBoZWlnaHQ9Jzg1JyByeD0nMTAnIGZpbGw9JyNlYmY4ZmYnIHN0cm9rZT0nIzJiNmNiMCcgc3Ryb2tlLXdpZHRoPScxJy8+PHRleHQgeD0nNjUnIHk9JzIxNScgZmlsbD0nIzFhMzY1ZCcgZm9udC1zaXplPScwLjlyZW0nIGZvbnQtd2VpZ2h0PSc3MDAnPkFkZGl0aW9uYWwgZHJpdmVyczo8L3RleHQ+PHRleHQgeD0nNjUnIHk9JzI0MCcgZmlsbD0nIzJhNDM2NScgZm9udC1zaXplPScwLjgycmVtJz4mIzgyMjY7IDYzJSBvZiB3b3JrbG9hZHMgaW4gY2xvdWQgICAmIzgyMjY7IDQzJSBvZiBhdHRhY2tzIHRhcmdldCB3ZWIgYXBwcy9BUElzICAgJiM4MjI2OyAxNSUgZW1wbG95ZWVzIGV4cG9zZSBkYXRhIHZpYSBHZW5BSSB3aXRob3V0IGF1dGg8L3RleHQ+PC9zdmc+" alt="Industry Context: 65% breaches from inadequate access controls, 49% involve identity abuse, 32% exploit stolen credentials, $88B market by 2030">
+        </div>
+    </div>
+
+    <!-- ============ ARCHITECTURE ============ -->
+    <div class="section-block" id="architecture">
+        <h2>System Architecture</h2>
+
+        <!-- SVG Infographic: PDP Architecture -->
+        <div class="infographic-container">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA4ODAgMzgwJyBmb250LWZhbWlseT0nU2Vnb2UgVUksIHN5c3RlbS11aSwgc2Fucy1zZXJpZic+PHJlY3Qgd2lkdGg9Jzg4MCcgaGVpZ2h0PSczODAnIHJ4PScxMicgZmlsbD0nI2Y3ZmFmYycvPjx0ZXh0IHg9JzQ0MCcgeT0nMzUnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyMxYTM2NWQnIGZvbnQtc2l6ZT0nMS4xNXJlbScgZm9udC13ZWlnaHQ9JzgwMCc+UG9saWN5IERlY2lzaW9uIFBvaW50IChQRFApIEFyY2hpdGVjdHVyZTwvdGV4dD48cmVjdCB4PSc2MCcgeT0nNjAnIHdpZHRoPScyMDAnIGhlaWdodD0nOTAnIHJ4PScxMCcgZmlsbD0nIzFhMzY1ZCcvPjx0ZXh0IHg9JzE2MCcgeT0nOTUnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9J3doaXRlJyBmb250LXNpemU9JzAuOTVyZW0nIGZvbnQtd2VpZ2h0PSc3MDAnPlBvbGljeSBEZWNpc2lvbiBQb2ludDwvdGV4dD48dGV4dCB4PScxNjAnIHk9JzExNScgdGV4dC1hbmNob3I9J21pZGRsZScgZmlsbD0nIzkwY2RmNCcgZm9udC1zaXplPScwLjc4cmVtJz5DZW50cmFsIGRlY2lzaW9uIGVuZ2luZTwvdGV4dD48dGV4dCB4PScxNjAnIHk9JzEzMicgdGV4dC1hbmNob3I9J21pZGRsZScgZmlsbD0nIzkwY2RmNCcgZm9udC1zaXplPScwLjcycmVtJz5aZXJvIFRydXN0IHBvbGljeSBldmFsdWF0aW9uPC90ZXh0PjxyZWN0IHg9JzM0MCcgeT0nNjAnIHdpZHRoPScyMDAnIGhlaWdodD0nOTAnIHJ4PScxMCcgZmlsbD0nI2Q2OWUyZScvPjx0ZXh0IHg9JzQ0MCcgeT0nOTUnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9J3doaXRlJyBmb250LXNpemU9JzAuOTVyZW0nIGZvbnQtd2VpZ2h0PSc3MDAnPkxMTSBFbmdpbmU8L3RleHQ+PHRleHQgeD0nNDQwJyB5PScxMTUnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyNmZWZjYmYnIGZvbnQtc2l6ZT0nMC43OHJlbSc+TG9jYWwgTWV0YS1MbGFtYS0zLjEtOEI8L3RleHQ+PHRleHQgeD0nNDQwJyB5PScxMzInIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyNmZWZjYmYnIGZvbnQtc2l6ZT0nMC43MnJlbSc+UHJpdmFjeS1wcmVzZXJ2aW5nIGluZmVyZW5jZTwvdGV4dD48cmVjdCB4PSc2MjAnIHk9JzYwJyB3aWR0aD0nMjAwJyBoZWlnaHQ9JzkwJyByeD0nMTAnIGZpbGw9JyMzOGExNjknLz48dGV4dCB4PSc3MjAnIHk9Jzk1JyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPSd3aGl0ZScgZm9udC1zaXplPScwLjk1cmVtJyBmb250LXdlaWdodD0nNzAwJz5Dcm9zcy1Db3JyZWxhdGlvbiBFbmdpbmU8L3RleHQ+PHRleHQgeD0nNzIwJyB5PScxMTUnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyNjNmY2ZDUnIGZvbnQtc2l6ZT0nMC43OHJlbSc+SVNPIDI3MDAxIOKGkOKGkiBOSVNUIOKGkOKGkiBET1JBPC90ZXh0Pjx0ZXh0IHg9JzcyMCcgeT0nMTMyJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPScjYzZmNmQ1JyBmb250LXNpemU9JzAuNzJyZW0nPk11bHRpLWZyYW1ld29yayBtYXBwaW5nPC90ZXh0PjxyZWN0IHg9JzE2MCcgeT0nMTg1JyB3aWR0aD0nMjAwJyBoZWlnaHQ9JzgwJyByeD0nMTAnIGZpbGw9JyMyYjZjYjAnLz48dGV4dCB4PScyNjAnIHk9JzIxOCcgdGV4dC1hbmNob3I9J21pZGRsZScgZmlsbD0nd2hpdGUnIGZvbnQtc2l6ZT0nMC45NXJlbScgZm9udC13ZWlnaHQ9JzcwMCc+UmlzayBTY29yaW5nIE1vZHVsZTwvdGV4dD48dGV4dCB4PScyNjAnIHk9JzIzOCcgdGV4dC1hbmNob3I9J21pZGRsZScgZmlsbD0nI2JlZTNmOCcgZm9udC1zaXplPScwLjc4cmVtJz4w4oCTMSBjb250aW51b3VzIHNjYWxlPC90ZXh0Pjx0ZXh0IHg9JzI2MCcgeT0nMjUyJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPScjYmVlM2Y4JyBmb250LXNpemU9JzAuNzJyZW0nPkRFTlkvQUxMT1cgdGhyZXNob2xkczwvdGV4dD48cmVjdCB4PSc1MDAnIHk9JzE4NScgd2lkdGg9JzIwMCcgaGVpZ2h0PSc4MCcgcng9JzEwJyBmaWxsPScjODA2ZmFkJy8+PHRleHQgeD0nNjAwJyB5PScyMTgnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9J3doaXRlJyBmb250LXNpemU9JzAuOTVyZW0nIGZvbnQtd2VpZ2h0PSc3MDAnPlJlcG9ydCBHZW5lcmF0b3I8L3RleHQ+PHRleHQgeD0nNjAwJyB5PScyMzgnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyNlOWQ4ZmQnIGZvbnQtc2l6ZT0nMC43OHJlbSc+SlNPTiArIFBsYW50VU1MIG91dHB1dDwvdGV4dD48dGV4dCB4PSc2MDAnIHk9JzI1MicgdGV4dC1hbmNob3I9J21pZGRsZScgZmlsbD0nI2U5ZDhmZCcgZm9udC1zaXplPScwLjcycmVtJz5BcmNoaXRlY3R1cmUgZGlhZ3JhbXM8L3RleHQ+PHJlY3QgeD0nMjgwJyB5PSczMDAnIHdpZHRoPSczMjAnIGhlaWdodD0nNTAnIHJ4PSc4JyBmaWxsPScjZTUzZTNlJyBvcGFjaXR5PScwLjEyJy8+PHRleHQgeD0nNDQwJyB5PSczMzAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyM3NDIxMmEnIGZvbnQtc2l6ZT0nMC44MnJlbScgZm9udC13ZWlnaHQ9JzYwMCc+JiM5ODg5OyBQcml2YWN5LWJ5LWRlc2lnbjogTExNIHJ1bnMgbG9jYWxseSDigJQgbm8gY2xvdWQgQVBJIGNhbGxzPC90ZXh0Pjwvc3ZnPg==" alt="PDP Architecture: Policy Decision Point, LLM Engine, Cross-Correlation Engine, Risk Scoring Module, Report Generator">
+        </div>
+
+        <h3>5 Cloud Architectures Audited</h3>
+        <table class="results-table">
+            <thead>
+                <tr>
+                    <th>Scenario</th>
+                    <th>Cloud Provider</th>
+                    <th>Focus Area</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>ARQ-01</td><td>Microsoft Azure</td><td>Single-cloud ZTA baseline</td></tr>
+                <tr><td>ARQ-02</td><td>Google Cloud Platform</td><td>GCP-specific IAM &amp; access controls</td></tr>
+                <tr><td>ARQ-03</td><td>Amazon Web Services</td><td>AWS Zero Trust implementation</td></tr>
+                <tr><td>ARQ-04</td><td>Multi-Cloud (Azure + GCP + AWS)</td><td>Cross-cloud policy consistency</td></tr>
+                <tr><td>ARQ-05</td><td>Microsoft Azure (Remediated)</td><td>Post-remediation validation</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ============ RESULTS ============ -->
+    <div class="section-block" id="results">
+        <h2>Audit Results</h2>
+
+        <!-- Visual Score Bar Chart -->
+        <div class="score-chart">
+            <div class="score-row">
+                <div class="score-label">ARQ-01 Azure</div>
+                <div class="score-bar-track">
+                    <div class="score-bar-fill bar-critical" style="width: 76%">0.76</div>
+                </div>
+                <div class="score-decision deny">DENY</div>
+            </div>
+            <div class="score-row">
+                <div class="score-label">ARQ-02 GCP</div>
+                <div class="score-bar-track">
+                    <div class="score-bar-fill bar-critical" style="width: 80%">0.80</div>
+                </div>
+                <div class="score-decision deny">DENY</div>
+            </div>
+            <div class="score-row">
+                <div class="score-label">ARQ-03 AWS</div>
+                <div class="score-bar-track">
+                    <div class="score-bar-fill bar-critical" style="width: 80%">0.80</div>
+                </div>
+                <div class="score-decision deny">DENY</div>
+            </div>
+            <div class="score-row">
+                <div class="score-label">ARQ-04 Multi</div>
+                <div class="score-bar-track">
+                    <div class="score-bar-fill bar-critical" style="width: 72%">0.72</div>
+                </div>
+                <div class="score-decision deny">DENY</div>
+            </div>
+            <div class="score-row">
+                <div class="score-label">ARQ-05 Remediated</div>
+                <div class="score-bar-track">
+                    <div class="score-bar-fill bar-low" style="width: 32%">0.32</div>
+                </div>
+                <div class="score-decision allow">ALLOW</div>
+            </div>
+        </div>
+
+        <!-- Key findings as compact cards -->
+        <div class="compact-cards">
+            <div class="compact-card card-red">
+                <h4>ARQ-01 Azure &mdash; 7 Gaps</h4>
+                <ul>
+                    <li>Implicit trust in VNet</li>
+                    <li>AKS without network policies</li>
+                    <li>Azure SQL with public endpoints</li>
+                    <li>Redis sessions in shared subnet</li>
+                </ul>
+            </div>
+            <div class="compact-card card-red">
+                <h4>ARQ-02 GCP &mdash; 6 Findings</h4>
+                <ul>
+                    <li>BigQuery data exfiltration risk</li>
+                    <li>Looker admin credential theft</li>
+                    <li>Unsupervised external Data Scientist access</li>
+                    <li>B2B API without verification</li>
+                </ul>
+            </div>
+            <div class="compact-card card-red">
+                <h4>ARQ-03 AWS &mdash; 5 Findings</h4>
+                <ul>
+                    <li>SPOF in EC2</li>
+                    <li>Public ELB routing</li>
+                    <li>RDS without network segregation</li>
+                    <li>S3 static ACLs, IAM plaintext credentials</li>
+                </ul>
+            </div>
+            <div class="compact-card card-red">
+                <h4>ARQ-04 Multi-Cloud &mdash; 8 Findings</h4>
+                <ul>
+                    <li>3DES weak cipher (Sweet32)</li>
+                    <li>IKEv1 obsolete key exchange</li>
+                    <li>CIDR overlap transitively</li>
+                    <li>No L7 inspection between clouds</li>
+                </ul>
+            </div>
+            <div class="compact-card card-green">
+                <h4>ARQ-05 Azure Remediated &mdash; ALLOW</h4>
+                <ul>
+                    <li>VNet isolation + WAF Premium</li>
+                    <li>PrivateLink + Calico NetworkPolicies</li>
+                    <li>Entra ID managed identities</li>
+                    <li>Redis private endpoints + sandbox</li>
+                </ul>
+            </div>
+            <div class="compact-card card-green">
+                <h4>Validation Result</h4>
+                <ul>
+                    <li>Score: 0.76 (DENY) &rarr; 0.32 (ALLOW)</li>
+                    <li>58% risk reduction achieved</li>
+                    <li>PDP architecture effectiveness validated</li>
+                    <li>DENY threshold (0.7) &mdash; 94% accuracy</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ SEVERITY THRESHOLDS ============ -->
+    <div class="section-block" id="thresholds">
+        <h2>Severity Thresholds</h2>
+
+        <!-- SVG Infographic: Threshold Scale -->
+        <div class="infographic-container">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA4ODAgMTgwJyBmb250LWZhbWlseT0nU2Vnb2UgVUksIHN5c3RlbS11aSwgc2Fucy1zZXJpZic+PHJlY3Qgd2lkdGg9Jzg4MCcgaGVpZ2h0PScxODAnIHJ4PScxMicgZmlsbD0nI2Y3ZmFmYycvPjx0ZXh0IHg9JzQ0MCcgeT0nMzAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyMxYTM2NWQnIGZvbnQtc2l6ZT0nMXJlbScgZm9udC13ZWlnaHQ9JzgwMCc+RGV0ZXJtaW5pc3RpYyBTZXZlcml0eSBDbGFzc2lmaWNhdGlvbiAoMCDigJMgMSBTY2FsZSk8L3RleHQ+PHJlY3QgeD0nNTAnIHk9JzU1JyB3aWR0aD0nMTgwJyBoZWlnaHQ9JzU1JyByeD0nNicgZmlsbD0nI2U1M2UzZScvPjx0ZXh0IHg9JzE0MCcgeT0nODAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9J3doaXRlJyBmb250LXNpemU9JzAuODhyZW0nIGZvbnQtd2VpZ2h0PSc3MDAnPkNSSVRJQ0FMICAwLjcg4oCTIDEuMDwvdGV4dD48dGV4dCB4PScxNDAnIHk9Jzk4JyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPScjZmVkN2Q3JyBmb250LXNpemU9JzAuNzJyZW0nPkRFTlkg4oCUIEltbWVkaWF0ZSByZW1lZGlhdGlvbjwvdGV4dD48cmVjdCB4PScyNjAnIHk9JzU1JyB3aWR0aD0nMTYwJyBoZWlnaHQ9JzU1JyByeD0nNicgZmlsbD0nI2RkNmIyMCcvPjx0ZXh0IHg9JzM0MCcgeT0nODAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9J3doaXRlJyBmb250LXNpemU9JzAuODhyZW0nIGZvbnQtd2VpZ2h0PSc3MDAnPkhJR0ggIDAuNCDigJMgMC42OTwvdGV4dD48dGV4dCB4PSczNDAnIHk9Jzk4JyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPScjZmVlYmM4JyBmb250LXNpemU9JzAuNzJyZW0nPkRFTlkg4oCUIFNwcmludCBjeWNsZTwvdGV4dD48cmVjdCB4PSc0NDUnIHk9JzU1JyB3aWR0aD0nMTUwJyBoZWlnaHQ9JzU1JyByeD0nNicgZmlsbD0nI2Q2OWUyZScvPjx0ZXh0IHg9JzUyMCcgeT0nODAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9J3doaXRlJyBmb250LXNpemU9JzAuODhyZW0nIGZvbnQtd2VpZ2h0PSc3MDAnPk1FRElVTSAgMC4yIOKAkyAwLjM5PC90ZXh0Pjx0ZXh0IHg9JzUyMCcgeT0nOTgnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyNmZWZjYmYnIGZvbnQtc2l6ZT0nMC43MnJlbSc+UkVWSUVXIOKAlCBNb25pdG9yPC90ZXh0PjxyZWN0IHg9JzYyMCcgeT0nNTUnIHdpZHRoPScxNDAnIGhlaWdodD0nNTUnIHJ4PSc2JyBmaWxsPScjMzhhMTY5Jy8+PHRleHQgeD0nNjkwJyB5PSc4MCcgdGV4dC1hbmNob3I9J21pZGRsZScgZmlsbD0nd2hpdGUnIGZvbnQtc2l6ZT0nMC44OHJlbScgZm9udC13ZWlnaHQ9JzcwMCc+TE9XICAwLjAg4oCTIDAuMTk8L3RleHQ+PHRleHQgeD0nNjkwJyB5PSc5OCcgdGV4dC1hbmNob3I9J21pZGRsZScgZmlsbD0nI2M2ZjZkNScgZm9udC1zaXplPScwLjcycmVtJz5BTExPVyDigJQgUmVzaWR1YWw8L3RleHQ+PHRleHQgeD0nNDQwJyB5PScxNDUnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyM3MTgwOTYnIGZvbnQtc2l6ZT0nMC43OHJlbSc+Q29uZmlndXJhYmxlIHRocmVzaG9sZHMgY2FsaWJyYXRlZCBhY3Jvc3MgNSBzY2VuYXJpb3Mg4oCUIERFTlkg4omlIDAuNyAvIEFMTE9XIOKJpCAwLjM8L3RleHQ+PC9zdmc+" alt="Severity Thresholds: Critical 0.7-1.0 DENY, High 0.4-0.69 DENY, Medium 0.2-0.39 REVIEW, Low 0.0-0.19 ALLOW">
+        </div>
+    </div>
+
+    <!-- ============ CROSS-WALK ============ -->
+    <div class="section-block" id="crosswalk">
+        <h2>Compliance Cross-Correlation</h2>
+
+        <!-- SVG Infographic: Cross-walk flow -->
+        <div class="infographic-container">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA4ODAgMzIwJyBmb250LWZhbWlseT0nU2Vnb2UgVUksIHN5c3RlbS11aSwgc2Fucy1zZXJpZic+PHJlY3Qgd2lkdGg9Jzg4MCcgaGVpZ2h0PSczMjAnIHJ4PScxMicgZmlsbD0nI2Y3ZmFmYycvPjx0ZXh0IHg9JzQ0MCcgeT0nMzUnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyMxYTM2NWQnIGZvbnQtc2l6ZT0nMS4xcmVtJyBmb250LXdlaWdodD0nODAwJz5NdWx0aS1GcmFtZXdvcmsgQ3Jvc3MtQ29ycmVsYXRpb24gRW5naW5lPC90ZXh0PjxyZWN0IHg9JzMwJyB5PSc2MCcgd2lkdGg9JzI0MCcgaGVpZ2h0PSc5MCcgcng9JzEwJyBmaWxsPScjYzZmNmQ1JyBzdHJva2U9JyMzOGExNjknIHN0cm9rZS13aWR0aD0nMicvPjx0ZXh0IHg9JzE1MCcgeT0nOTAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyMyMjU0M2QnIGZvbnQtc2l6ZT0nMXJlbScgZm9udC13ZWlnaHQ9JzcwMCc+SVNPIDI3MDAxOjIwMjI8L3RleHQ+PHRleHQgeD0nMTUwJyB5PScxMTAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyMyNzY3NDknIGZvbnQtc2l6ZT0nMC43OHJlbSc+QW5uZXggQSBjb250cm9sczwvdGV4dD48dGV4dCB4PScxNTAnIHk9JzEyOCcgdGV4dC1hbmNob3I9J21pZGRsZScgZmlsbD0nIzI3Njc0OScgZm9udC1zaXplPScwLjcycmVtJz5BY2Nlc3MgY29udHJvbCwgZW5jcnlwdGlvbiwgb3BzIHNlY3VyaXR5PC90ZXh0PjxyZWN0IHg9JzMyMCcgeT0nNjAnIHdpZHRoPScyNDAnIGhlaWdodD0nOTAnIHJ4PScxMCcgZmlsbD0nI2ZlZmNiZicgc3Ryb2tlPScjZDY5ZTJlJyBzdHJva2Utd2lkdGg9JzInLz48dGV4dCB4PSc0NDAnIHk9JzkwJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPScjNzQ0MjEwJyBmb250LXNpemU9JzFyZW0nIGZvbnQtd2VpZ2h0PSc3MDAnPk5JU1QgU1AgODAwLTIwNzwvdGV4dD48dGV4dCB4PSc0NDAnIHk9JzExMCcgdGV4dC1hbmNob3I9J21pZGRsZScgZmlsbD0nIzk3NWExNicgZm9udC1zaXplPScwLjc4cmVtJz5aZXJvIFRydXN0IHRlbmV0czwvdGV4dD48dGV4dCB4PSc0NDAnIHk9JzEyOCcgdGV4dC1hbmNob3I9J21pZGRsZScgZmlsbD0nIzk3NWExNicgZm9udC1zaXplPScwLjcycmVtJz5QRFAvUEVQLCBsZWFzdCBwcml2aWxlZ2UsIGNvbnRpbnVvdXMgdmVyaWZ5PC90ZXh0PjxyZWN0IHg9JzYxMCcgeT0nNjAnIHdpZHRoPScyNDAnIGhlaWdodD0nOTAnIHJ4PScxMCcgZmlsbD0nI2JlZTNmOCcgc3Ryb2tlPScjMmI2Y2IwJyBzdHJva2Utd2lkdGg9JzInLz48dGV4dCB4PSc3MzAnIHk9JzkwJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPScjMmE0MzY1JyBmb250LXNpemU9JzFyZW0nIGZvbnQtd2VpZ2h0PSc3MDAnPkRPUkEgKEVVIDIwMjIvMjU1NCk8L3RleHQ+PHRleHQgeD0nNzMwJyB5PScxMTAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyMyYTQzNjUnIGZvbnQtc2l6ZT0nMC43OHJlbSc+T3BlcmF0aW9uYWwgcmVzaWxpZW5jZTwvdGV4dD48dGV4dCB4PSc3MzAnIHk9JzEyOCcgdGV4dC1hbmNob3I9J21pZGRsZScgZmlsbD0nIzJhNDM2NScgZm9udC1zaXplPScwLjcycmVtJz5JQ1QgcmlzayBtZ210LCBpbmNpZGVudCByZXBvcnRpbmcsIHRlc3Rpbmc8L3RleHQ+PHBhdGggZD0nTTE1MCAxNTAgTDE1MCAxODUnIHN0cm9rZT0nIzRhNTU2OCcgc3Ryb2tlLXdpZHRoPScyJy8+PHBhdGggZD0nTTQ0MCAxNTAgTDQ0MCAxODUnIHN0cm9rZT0nIzRhNTU2OCcgc3Ryb2tlLXdpZHRoPScyJy8+PHBhdGggZD0nTTczMCAxNTAgTDczMCAxODUnIHN0cm9rZT0nIzRhNTU2OCcgc3Ryb2tlLXdpZHRoPScyJy8+PHJlY3QgeD0nMTIwJyB5PScxODUnIHdpZHRoPSc2NDAnIGhlaWdodD0nNzAnIHJ4PScxMCcgZmlsbD0nIzFhMzY1ZCcvPjx0ZXh0IHg9JzQ0MCcgeT0nMjE1JyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPSd3aGl0ZScgZm9udC1zaXplPScxcmVtJyBmb250LXdlaWdodD0nNzAwJz5Dcm9zcy1Db3JyZWxhdGlvbiBFbmdpbmU8L3RleHQ+PHRleHQgeD0nNDQwJyB5PScyMzcnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyM5MGNkZjQnIGZvbnQtc2l6ZT0nMC43OHJlbSc+TWFwcyBmaW5kaW5ncyBzaW11bHRhbmVvdXNseSDigJQgb25lIGdhcCA9IG11bHRpLWZyYW1ld29yayBpbXBhY3Q8L3RleHQ+PHJlY3QgeD0nMjAwJyB5PScyNzUnIHdpZHRoPSc0ODAnIGhlaWdodD0nMzAnIHJ4PSc2JyBmaWxsPScjMzhhMTY5JyBvcGFjaXR5PScwLjE1Jy8+PHRleHQgeD0nNDQwJyB5PScyOTUnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyMyMjU0M2QnIGZvbnQtc2l6ZT0nMC44MnJlbScgZm9udC13ZWlnaHQ9JzYwMCc+T3V0cHV0OiBVbmlmaWVkIHJlbWVkaWF0aW9uIHBsYW4gd2l0aCBjcm9zcy1mcmFtZXdvcmsgdHJhY2VhYmlsaXR5PC90ZXh0Pjwvc3ZnPg==" alt="Cross-Correlation Engine: ISO 27001, NIST SP 800-207, DORA mapped simultaneously">
+        </div>
+
+        <!-- Cross-walk examples as compact cards -->
+        <div class="compact-cards">
+            <div class="compact-card card-blue">
+                <h4>ARQ-02 (GCP) Cross-Walk</h4>
+                <ul>
+                    <li>BigQuery exposure + B2B connectors</li>
+                    <li>DORA Articles 6&amp;7: lack of control over external users</li>
+                    <li>Auto-rec: Google Cloud IAM end-to-end</li>
+                    <li>Transforms static access into revocable least-privilege (NIST)</li>
+                </ul>
+            </div>
+            <div class="compact-card card-blue">
+                <h4>ARQ-03 (AWS) Cross-Walk</h4>
+                <ul>
+                    <li>Flat EC2-S3 coupling identified</li>
+                    <li>PlantUML forced encrypted traffic (Port 443)</li>
+                    <li>ISO 27001: ransomware protection + backup isolation</li>
+                    <li>Public ELB routing &rarr; zero trust segmentation</li>
+                </ul>
+            </div>
+            <div class="compact-card card-blue">
+                <h4>ARQ-04 (Multi-Cloud) Cross-Walk</h4>
+                <ul>
+                    <li>3DES weak cipher (Sweet32) + IKEv1</li>
+                    <li>DORA + ISO 27001: both non-compliant</li>
+                    <li>Rec: IKEv2 + AES-256 migration</li>
+                    <li>Cross-cloud L7 inspection gap identified</li>
+                </ul>
+            </div>
+            <div class="compact-card card-green">
+                <h4>ARQ-05 Validation Cross-Walk</h4>
+                <ul>
+                    <li>Score: 0.76 (DENY) &rarr; 0.32 (ALLOW)</li>
+                    <li>VNet isolation + PrivateLink (ISO 27001 A.13)</li>
+                    <li>Entra ID managed identities (NIST SP 800-207)</li>
+                    <li>DORA: operational resilience validated</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ LLM BIAS ============ -->
+    <div class="section-block" id="bias">
+        <h2>LLM Bias &amp; Hallucination Analysis</h2>
+
+        <p style="font-size: 0.98rem; color: #4a5568; margin-bottom: 16px;">Three specific deviation vectors were documented during the ARQ-04 (multi-cloud) scenario, providing empirical evidence of LLM limitations in security-critical applications:</p>
+
+        <!-- SVG Infographic: LLM Bias Vectors -->
+        <div class="infographic-container">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA4ODAgMzQwJyBmb250LWZhbWlseT0nU2Vnb2UgVUksIHN5c3RlbS11aSwgc2Fucy1zZXJpZic+PHJlY3Qgd2lkdGg9Jzg4MCcgaGVpZ2h0PSczNDAnIHJ4PScxMicgZmlsbD0nI2Y3ZmFmYycvPjx0ZXh0IHg9JzQ0MCcgeT0nMzUnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyMxYTM2NWQnIGZvbnQtc2l6ZT0nMS4xcmVtJyBmb250LXdlaWdodD0nODAwJz5MTE0gRGV2aWF0aW9uIFZlY3RvcnMgKE1ldGEtTGxhbWEtMy4xLThCKTwvdGV4dD48cmVjdCB4PSczMCcgeT0nNTUnIHdpZHRoPScyNjAnIGhlaWdodD0nMTM1JyByeD0nMTAnIGZpbGw9JyNmZmY1ZjUnIHN0cm9rZT0nI2U1M2UzZScgc3Ryb2tlLXdpZHRoPScyJy8+PHRleHQgeD0nMTYwJyB5PSc4NScgdGV4dC1hbmNob3I9J21pZGRsZScgZmlsbD0nI2U1M2UzZScgZm9udC1zaXplPScwLjlyZW0nIGZvbnQtd2VpZ2h0PSc3MDAnPjEuIFRhcmdldCBUb2tlbiBCaWFzPC90ZXh0Pjx0ZXh0IHg9JzU1JyB5PScxMDgnIGZpbGw9JyM3NDIxMmEnIGZvbnQtc2l6ZT0nMC43OHJlbSc+TExNIHBlcnNpc3RlbnRseSBhc3NpZ25lZCBvdXRwdXQ8L3RleHQ+PHRleHQgeD0nNTUnIHk9JzEyNScgZmlsbD0nIzc0MjEyYScgZm9udC1zaXplPScwLjc4cmVtJz5pZGVudGlmaWVyIGFzIEFXUy1vbmx5LCBvbWl0dGluZzwvdGV4dD48dGV4dCB4PSc1NScgeT0nMTQyJyBmaWxsPScjNzQyMTJhJyBmb250LXNpemU9JzAuNzhyZW0nPkF6dXJlIGZyb20gdGl0bGUgZGVzcGl0ZSBib3RoPC90ZXh0Pjx0ZXh0IHg9JzU1JyB5PScxNTknIGZpbGw9JyM3NDIxMmEnIGZvbnQtc2l6ZT0nMC43OHJlbSc+cHJvdmlkZXJzIHByZXNlbnQuIFNlbWFudGljIHdlaWdodDwvdGV4dD48dGV4dCB4PSc1NScgeT0nMTc2JyBmaWxsPScjNzQyMTJhJyBmb250LXNpemU9JzAuNzhyZW0nPmJpYXMgdG93YXJkIGRhdGEgZGVzdGluYXRpb24gbm9kZXMuPC90ZXh0PjxyZWN0IHg9JzMxMCcgeT0nNTUnIHdpZHRoPScyNjAnIGhlaWdodD0nMTM1JyByeD0nMTAnIGZpbGw9JyNmZmZhZjAnIHN0cm9rZT0nI2RkNmIyMCcgc3Ryb2tlLXdpZHRoPScyJy8+PHRleHQgeD0nNDQwJyB5PSc4NScgdGV4dC1hbmNob3I9J21pZGRsZScgZmlsbD0nI2RkNmIyMCcgZm9udC1zaXplPScwLjlyZW0nIGZvbnQtd2VpZ2h0PSc3MDAnPjIuIEFic3RyYWN0aW9uIENvbmZ1c2lvbjwvdGV4dD48dGV4dCB4PSczMzUnIHk9JzEwOCcgZmlsbD0nIzdiMzQxZScgZm9udC1zaXplPScwLjc4cmVtJz5XaGVuIGV2YWx1YXRpbmcgUkRTIHBsYWludGV4dCB0cmFmZmljLDwvdGV4dD48dGV4dCB4PSczMzUnIHk9JzEyNScgZmlsbD0nIzdiMzQxZScgZm9udC1zaXplPScwLjc4cmVtJz50aGUgTExNIGludGVycHJldGVkIOKAnHBsYWludGV4dOKAnSBhczwvdGV4dD48dGV4dCB4PSczMzUnIHk9JzE0MicgZmlsbD0nIzdiMzQxZScgZm9udC1zaXplPScwLjc4cmVtJz50aGUgdmlzdWFsIGxhYmVsIGluIGRpYWdyYW0sIG5vdCB0aGU8L3RleHQ+PHRleHQgeD0nMzM1JyB5PScxNTknIGZpbGw9JyM3YjM0MWUnIGZvbnQtc2l6ZT0nMC43OHJlbSc+YWN0dWFsIG5ldHdvcmsgcHJvdG9jb2wg4oCUIGdhcCBpbjwvdGV4dD48dGV4dCB4PSczMzUnIHk9JzE3NicgZmlsbD0nIzdiMzQxZScgZm9udC1zaXplPScwLjc4cmVtJz5hYnN0cmFjdGlvbiBjYXBhYmlsaXR5LjwvdGV4dD48cmVjdCB4PSc1OTAnIHk9JzU1JyB3aWR0aD0nMjYwJyBoZWlnaHQ9JzEzNScgcng9JzEwJyBmaWxsPScjZmZmZmYwJyBzdHJva2U9JyNkNjllMmUnIHN0cm9rZS13aWR0aD0nMicvPjx0ZXh0IHg9JzcyMCcgeT0nODUnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyNkNjllMmUnIGZvbnQtc2l6ZT0nMC45cmVtJyBmb250LXdlaWdodD0nNzAwJz4zLiBDb250ZXh0IFNhdHVyYXRpb248L3RleHQ+PHRleHQgeD0nNjE1JyB5PScxMDgnIGZpbGw9JyM3NDQyMTAnIGZvbnQtc2l6ZT0nMC43OHJlbSc+SW4gY29tcGxleCBtdWx0aS1jbG91ZCB0b3BvbG9naWVzLCB0aGU8L3RleHQ+PHRleHQgeD0nNjE1JyB5PScxMjUnIGZpbGw9JyM3NDQyMTAnIGZvbnQtc2l6ZT0nMC43OHJlbSc+OEIgbW9kZWwgc2hvd2VkIHJlZHVjZWQgYWNjdXJhY3kgb248L3RleHQ+PHRleHQgeD0nNjE1JyB5PScxNDInIGZpbGw9JyM3NDQyMTAnIGZvbnQtc2l6ZT0nMC43OHJlbSc+ZWxlbWVudHMgYXQgcGVyaXBoZXJ5IG9mIGNvbnRleHQgd2luZG93PC90ZXh0Pjx0ZXh0IHg9JzYxNScgeT0nMTU5JyBmaWxsPScjNzQ0MjEwJyBmb250LXNpemU9JzAuNzhyZW0nPuKAlCByZXF1aXJpbmcgcmUtcHJvbXB0aW5nIGFuZDwvdGV4dD48dGV4dCB4PSc2MTUnIHk9JzE3NicgZmlsbD0nIzc0NDIxMCcgZm9udC1zaXplPScwLjc4cmVtJz5Qb2thLVlva2UgdmFsaWRhdGlvbiBsYXllcnMuPC90ZXh0PjxyZWN0IHg9JzE1MCcgeT0nMjE1JyB3aWR0aD0nNTgwJyBoZWlnaHQ9Jzk1JyByeD0nMTAnIGZpbGw9JyNlYmY4ZmYnIHN0cm9rZT0nIzJiNmNiMCcgc3Ryb2tlLXdpZHRoPScxJy8+PHRleHQgeD0nNDQwJyB5PScyNDInIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyMxYTM2NWQnIGZvbnQtc2l6ZT0nMC45NXJlbScgZm9udC13ZWlnaHQ9JzcwMCc+TWl0aWdhdGlvbiBTdHJhdGVnaWVzIEltcGxlbWVudGVkPC90ZXh0Pjx0ZXh0IHg9JzE4MCcgeT0nMjY1JyBmaWxsPScjMmE0MzY1JyBmb250LXNpemU9JzAuNzhyZW0nPiYjMTAwMDM7IFB5dGhvbiBQb2thLVlva2UgdmFsaWRhdGlvbiBsYXllciAgJiMxMDAwMzsgUmUtcHJvbXB0aW5nIHdpdGggc3RydWN0dXJlZCBjb25zdHJhaW50czwvdGV4dD48dGV4dCB4PScxODAnIHk9JzI4NScgZmlsbD0nIzJhNDM2NScgZm9udC1zaXplPScwLjc4cmVtJz4mIzEwMDAzOyBUb2tlbiBjb25zdW1wdGlvbiBtZXRyaWNzICAmIzEwMDAzOyBDb25zaXN0ZW5jeSB0ZXN0aW5nIHZpYSByZXBlYXRlZCBhdWRpdHM8L3RleHQ+PC9zdmc+" alt="LLM Deviation Vectors: Target Token Bias, Abstraction Confusion, Context Saturation">
+        </div>
+
+        <h3>Privacy-Preserving Design</h3>
+        <p style="font-size: 0.98rem; color: #4a5568;">Locally-deployed LLM (LM Studio) &mdash; no sensitive cloud architecture data transmitted to third-party AI providers. Full data sovereignty and Zero Trust alignment: the audit tool itself adheres to Zero Trust.</p>
+    </div>
+
+    <!-- ============ COMPETENCIES ============ -->
+    <div class="section-block" id="competencies">
+        <h2>Competencies Demonstrated</h2>
+
+        <div class="competency-grid">
+            <div class="competency-badge"><span class="cb-icon">&#9670;</span> Zero Trust Architecture (NIST SP 800-207)</div>
+            <div class="competency-badge"><span class="cb-icon">&#9670;</span> Multi-framework Compliance (ISO/NIST/DORA)</div>
+            <div class="competency-badge"><span class="cb-icon">&#9670;</span> Policy Decision Point (PDP) Design</div>
+            <div class="competency-badge"><span class="cb-icon">&#9670;</span> Cloud Security Auditing (Azure/GCP/AWS)</div>
+            <div class="competency-badge"><span class="cb-icon">&#9670;</span> LLM Integration for Security Automation</div>
+            <div class="competency-badge"><span class="cb-icon">&#9670;</span> Risk Scoring &amp; Threshold Calibration</div>
+            <div class="competency-badge"><span class="cb-icon">&#9670;</span> Cross-Correlation Analysis</div>
+            <div class="competency-badge"><span class="cb-icon">&#9670;</span> LLM Bias &amp; Hallucination Analysis</div>
+            <div class="competency-badge"><span class="cb-icon">&#9670;</span> Python Prototyping &amp; API Integration</div>
+            <div class="competency-badge"><span class="cb-icon">&#9670;</span> PlantUML Architecture Documentation</div>
+            <div class="competency-badge"><span class="cb-icon">&#9670;</span> Privacy-Preserving AI Design</div>
+            <div class="competency-badge"><span class="cb-icon">&#9670;</span> Research Methodology &amp; Academic Writing</div>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    <p>Diana C. Rodriguez Casas &mdash; Security Compliance &amp; GRC Specialist &copy; 2026. Project summary presented at high level to protect intellectual property.</p>
+</footer>
+
+</body>
+</html>
