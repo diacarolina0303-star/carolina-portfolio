@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Security Headers: Defense-in-depth for static portfolio -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none';">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diana C. Rodriguez Casas | Security Compliance & GRC Specialist</title>
+    <meta name="description" content="Senior Security Governance, IAM & GRC Specialist with 10+ years of experience in ISO 27001, SOC2, GDPR, NIST compliance frameworks.">
+    <style>
+        :root {
+            --primary: #1a365d;
+            --secondary: #2b6cb0;
+            --accent: #38a169;
+            --bg-light: #f7fafc;
+            --bg-dark: #1a202c;
+            --text: #2d3748;
+            --text-light: #e2e8f0;
+            --border: #e2e8f0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--text);
+            line-height: 1.7;
+            background: var(--bg-light);
+        }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--primary) 50%, var(--secondary) 100%);
+            color: var(--text-light);
+            padding: 100px 20px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234a5568' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+        .hero-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+        .hero h1 { font-size: 2.8rem; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.5px; }
+        .hero .title { font-size: 1.3rem; font-weight: 400; color: #90cdf4; margin-bottom: 20px; }
+        .hero .tagline { font-size: 1.05rem; color: #cbd5e0; max-width: 600px; margin: 0 auto 30px; }
+        .hero-links { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+        .hero-links a {
+            color: #90cdf4;
+            text-decoration: none;
+            border: 1px solid rgba(144,205,244,0.4);
+            padding: 8px 20px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+        .hero-links a:hover { background: rgba(144,205,244,0.15); border-color: #90cdf4; }
+
+        /* NAV */
+        nav {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+            max-width: 1000px;
+            margin: 0 auto;
+            gap: 0;
+        }
+        nav li a {
+            display: block;
+            padding: 16px 22px;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.92rem;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        nav li a:hover { color: var(--secondary); border-bottom-color: var(--secondary); }
+
+        /* SECTIONS */
+        .section {
+            padding: 70px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .section-alt { background: white; }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        .section-subtitle {
+            font-size: 1rem;
+            color: #718096;
+            margin-bottom: 40px;
+        }
+
+        /* ABOUT */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+        .about-text p { margin-bottom: 16px; font-size: 1.02rem; }
+        .about-highlights {
+            background: white;
+            border-radius: 10px;
+            padding: 28px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        .about-highlights h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 16px; }
+        .stat-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); }
+        .stat-row:last-child { border-bottom: none; }
+        .stat-label { font-weight: 600; color: var(--text); }
+        .stat-value { color: var(--secondary); font-weight: 600; }
+
+        /* COMPETENCIES */
+        .comp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+        .comp-card {
+            background: white;
+            border-radius: 10px;
+            padding: 28px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            border-left: 4px solid var(--secondary);
+            transition: transform 0.2s;
+        }
+        .comp-card:hover { transform: translateY(-3px); }
+        .comp-card h3 { font-size: 1.05rem; color: var(--primary); margin-bottom: 12px; }
+        .comp-card ul { list-style: none; }
+        .comp-card li { padding: 5px 0; font-size: 0.92rem; color: #4a5568; }
+        .comp-card li::before { content: '✓'; color: var(--accent); font-weight: 700; margin-right: 8px; }
+
+        /* CASE STUDIES */
+        .case-study {
+            background: white;
+            border-radius: 12px;
+            padding: 36px;
+            margin-bottom: 28px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+            border-top: 4px solid var(--accent);
+        }
+        .case-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+        .case-title { font-size: 1.25rem; font-weight: 700; color: var(--primary); }
+        .case-tag {
+            background: #ebf8ff;
+            color: var(--secondary);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+        .case-context { font-size: 0.92rem; color: #718096; margin-bottom: 16px; }
+        .case-actions h4 { font-size: 0.95rem; color: var(--text); margin-bottom: 10px; }
+        .case-actions ul { list-style: none; }
+        .case-actions li { padding: 6px 0; font-size: 0.93rem; color: #4a5568; }
+        .case-actions li::before { content: '▸'; color: var(--secondary); margin-right: 10px; font-weight: 700; }
+        .case-results {
+            background: #f0fff4;
+            border-radius: 8px;
+            padding: 18px 22px;
+            margin-top: 18px;
+        }
+        .case-results h4 { font-size: 0.92rem; color: var(--accent); margin-bottom: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .case-results ul { list-style: none; }
+        .case-results li { padding: 4px 0; font-size: 0.93rem; color: #2d3748; }
+        .case-results li::before { content: '★'; color: var(--accent); margin-right: 8px; }
+
+        /* FRAMEWORKS */
+        .framework-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        .framework-table th {
+            background: var(--primary);
+            color: white;
+            padding: 14px 18px;
+            text-align: left;
+            font-size: 0.92rem;
+        }
+        .framework-table td {
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.93rem;
+        }
+        .framework-table tr:last-child td { border-bottom: none; }
+        .framework-table tr:hover td { background: #f7fafc; }
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+        .badge-green { background: #c6f6d5; color: #22543d; }
+        .badge-blue { background: #bee3f8; color: #2a4365; }
+        .badge-purple { background: #e9d8fd; color: #44337a; }
+
+        /* CERTIFICATIONS */
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+        .cert-card {
+            background: white;
+            border-radius: 10px;
+            padding: 22px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .cert-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        .cert-info h4 { font-size: 0.98rem; color: var(--primary); margin-bottom: 4px; }
+        .cert-info p { font-size: 0.85rem; color: #718096; }
+
+        /* DOWNLOADS */
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .download-card {
+            background: white;
+            border-radius: 10px;
+            padding: 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+        .download-card:hover { border-color: var(--secondary); box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .download-icon { font-size: 2rem; margin-bottom: 12px; }
+        .download-card h4 { font-size: 1.02rem; color: var(--primary); margin-bottom: 8px; }
+        .download-card p { font-size: 0.88rem; color: #718096; margin-bottom: 14px; }
+        .download-btn {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        .download-btn:hover { background: var(--primary); }
+
+        /* CONTACT */
+        .contact-section {
+            background: linear-gradient(135deg, var(--bg-dark), var(--primary));
+            color: var(--text-light);
+            padding: 70px 20px;
+            text-align: center;
+        }
+        .contact-section h2 { font-size: 1.8rem; margin-bottom: 8px; }
+        .contact-section p { color: #cbd5e0; margin-bottom: 30px; }
+        .contact-links {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .contact-links a {
+            color: white;
+            text-decoration: none;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 10px 24px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+        .contact-links a:hover { background: rgba(255,255,255,0.1); border-color: white; }
+
+        /* FOOTER */
+        footer {
+            background: var(--bg-dark);
+            color: #718096;
+            text-align: center;
+            padding: 24px 20px;
+            font-size: 0.85rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .about-grid { grid-template-columns: 1fr; }
+            nav ul { flex-wrap: wrap; justify-content: center; }
+            nav li a { padding: 12px 14px; font-size: 0.85rem; }
+            .case-header { flex-direction: column; }
+            .section { padding: 50px 16px; }
+        }
+
+        /* LABS & COURSEWORK */
+        .lab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        .lab-card {
+            background: white;
+            border-radius: 12px;
+            padding: 28px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+            border-top: 4px solid var(--secondary);
+            transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+        .lab-card:hover { transform: translateY(-3px); }
+        .lab-card h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 10px; }
+        .lab-card p { font-size: 0.92rem; color: #4a5568; margin-bottom: 14px; flex-grow: 1; }
+        .lab-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+        .fw-tag { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 600; }
+        .fw-green { background: #c6f6d5; color: #22543d; }
+        .fw-blue { background: #bee3f8; color: #2a4365; }
+        .fw-purple { background: #e9d8fd; color: #44337a; }
+        .fw-orange { background: #feebc8; color: #7b341e; }
+        .fw-gold { background: #fefcbf; color: #744210; border: 1px solid #d69e2e; }
+        .lab-btn {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 600;
+            transition: background 0.3s;
+            align-self: flex-start;
+        }
+        .lab-btn:hover { background: var(--primary); }
+        .lab-featured {
+            border-top: 4px solid #d69e2e;
+            background: linear-gradient(180deg, #fffbeb 0%, white 30%);
+            grid-column: 1 / -1;
+        }
+        .lab-badge-featured {
+            display: inline-block;
+            background: #d69e2e;
+            color: #1a202c;
+            padding: 3px 12px;
+            border-radius: 16px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        /* ANIMATION */
+        /* CSS-only animation (no JavaScript required) */
+    .fade-in {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+    </style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>Diana C. Rodriguez Casas</h1>
+        <div class="title">Security Compliance &amp; GRC Specialist</div>
+        <p class="tagline">10+ years strengthening organizational security through governance, compliance frameworks, risk management, and internal audits across multi-cloud environments.</p>
+        <div class="hero-links">
+            <a href="#about">About Me</a>
+            <a href="#cases">Case Studies</a>
+            <a href="#labs">Strategic Projects</a>
+            <a href="#templates">Templates</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </div>
+</section>
+
+<!-- NAV -->
+<nav>
+    <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#competencies">Competencies</a></li>
+        <li><a href="#cases">Case Studies</a></li>
+        <li><a href="#frameworks">Frameworks</a></li>
+        <li><a href="#certs">Certifications</a></li>
+        <li><a href="#labs">Strategic Projects</a></li>
+        <li><a href="#templates">Templates</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+</nav>
+
+<!-- ABOUT -->
+<section class="section" id="about">
+    <h2 class="section-title">About Me</h2>
+    <p class="section-subtitle">Security governance professional with a passion for turning compliance requirements into actionable security programs.</p>
+    <div class="about-grid">
+        <div class="about-text">
+            <p>I am a Senior Security Governance, IAM &amp; GRC Specialist with over 10 years of experience in compliance frameworks, identity lifecycle management, and security risk management across hybrid and multi-cloud environments.</p>
+            <p>My expertise spans from implementing ISO 27001, SOC2, GDPR, and PCI-DSS controls to conducting internal audits, managing security policies, and driving organizational security maturity from Level 2 to Level 4.</p>
+            <p>I specialize in translating complex regulatory requirements into actionable technical controls, ensuring processes are compliant with relevant security frameworks, and managing operational documentation required by international standards.</p>
+            <p>Currently pursuing a Master's in Cybersecurity with a focus on Zero Trust architecture, I bring strategic vision, leadership, and measurable results to modern security programs.</p>
+        </div>
+        <div class="about-highlights">
+            <h3>Key Highlights</h3>
+            <div class="stat-row">
+                <span class="stat-label">Experience</span>
+                <span class="stat-value">10+ Years</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Security Maturity Improvement</span>
+                <span class="stat-value">Level 2 &rarr; Level 4</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">SOX Compliance Increase</span>
+                <span class="stat-value">65% &rarr; 90%</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Assets Hardened</span>
+                <span class="stat-value">3,500+</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Cloud Assets Remediated</span>
+                <span class="stat-value">5,000+</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">ISO 27001 Audit Support</span>
+                <span class="stat-value">100%</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Vendor Checklist Alignment</span>
+                <span class="stat-value">100% TPRM</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- COMPETENCIES -->
+<section class="section section-alt" id="competencies">
+    <h2 class="section-title">Core Competencies</h2>
+    <p class="section-subtitle">Key areas of expertise aligned with Security Compliance Officer &amp; GRC roles.</p>
+    <div class="comp-grid">
+        <div class="comp-card fade-in">
+            <h3>Security Governance &amp; Compliance</h3>
+            <ul>
+                <li>Security Control Framework Management</li>
+                <li>Compliance Assurance (ISO 27001, SOC2, GDPR)</li>
+                <li>Security Policies &amp; Procedures Development</li>
+                <li>Regulatory Requirements Advisory</li>
+                <li>Business Continuity &amp; Change Management</li>
+                <li>Security KPIs &amp; Maturity Measurement</li>
+            </ul>
+        </div>
+        <div class="comp-card fade-in">
+            <h3>Risk Management &amp; Audits</h3>
+            <ul>
+                <li>Internal Audit Planning &amp; Execution</li>
+                <li>Information Security Risk Assessment</li>
+                <li>Vulnerability Management</li>
+                <li>Access &amp; Permission Reviews</li>
+                <li>Compliance Checks &amp; Controls Testing</li>
+                <li>Remediation Tracking &amp; Reporting</li>
+            </ul>
+        </div>
+        <div class="comp-card fade-in">
+            <h3>Identity &amp; Access Management</h3>
+            <ul>
+                <li>Identity Lifecycle Management</li>
+                <li>Access Governance &amp; Entitlement Reviews</li>
+                <li>Privileged Access Management (PAM)</li>
+                <li>RBAC / ABAC Implementation</li>
+                <li>Zero Trust Architecture</li>
+                <li>Security Awareness Campaigns</li>
+            </ul>
+        </div>
+        <div class="comp-card fade-in">
+            <h3>Cloud &amp; Infrastructure Security</h3>
+            <ul>
+                <li>Multi-Cloud Security (Azure, AWS)</li>
+                <li>CSPM Strategy &amp; Implementation</li>
+                <li>Infrastructure Hardening (CIS Benchmarks)</li>
+                <li>SDLC Security Validation</li>
+                <li>Security Architecture Review</li>
+                <li>Third-Party Risk Management (TPRM)</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- CASE STUDIES -->
+<section class="section" id="cases">
+    <h2 class="section-title">Case Studies</h2>
+    <p class="section-subtitle">Real-world examples of security compliance initiatives (sanitized for confidentiality).</p>
+
+    <div class="case-study fade-in">
+        <div class="case-header">
+            <h3 class="case-title">ISO 27001 Compliance Program for Multi-Cloud Environment</h3>
+            <span class="case-tag">Compliance</span>
+        </div>
+        <p class="case-context">A global telecommunications company operating across Azure, AWS, and a third cloud provider needed to ensure 100% compliance with ISO 27001, SOX, DORA, and PCI-DSS controls across their multi-cloud infrastructure.</p>
+        <div class="case-actions">
+            <h4>Key Actions</h4>
+            <ul>
+                <li>Designed and implemented security posture controls and baselines across three cloud platforms</li>
+                <li>Executed technical risk assessments and CSPM strategies, remediating vulnerabilities in 20%+ of 5,000+ assets</li>
+                <li>Translated complex regulatory requirements into actionable technical security controls and remediation plans</li>
+                <li>Conducted technical audits validating compliance across all regulatory frameworks</li>
+            </ul>
+        </div>
+        <div class="case-results">
+            <h4>Results</h4>
+            <ul>
+                <li>100% compliance with ISO 27001, DORA, SOX, and PCI-DSS achieved</li>
+                <li>Security maturity improved from Level 2 to Level 4 (6-level scale)</li>
+                <li>Vulnerabilities remediated across 1,000+ cloud assets</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="case-study fade-in">
+        <div class="case-header">
+            <h3 class="case-title">SOX Compliance Hardening: From 65% to 90%</h3>
+            <span class="case-tag">Risk Management</span>
+        </div>
+        <p class="case-context">A major enterprise with 3,500+ critical assets was failing SOX compliance at 65%. A systematic hardening and vulnerability analysis program was needed to meet regulatory thresholds.</p>
+        <div class="case-actions">
+            <h4>Key Actions</h4>
+            <ul>
+                <li>Performed comprehensive hardening and vulnerability analysis using Nessus (Tenable SC)</li>
+                <li>Strengthened access governance through periodic entitlement reviews and privileged access controls</li>
+                <li>Automated key access management controls, achieving 80% maturity level</li>
+                <li>Maintained SOX and ISO 27001 controls, supporting all audit requests</li>
+            </ul>
+        </div>
+        <div class="case-results">
+            <h4>Results</h4>
+            <ul>
+                <li>SOX compliance increased from 65% to 90%</li>
+                <li>80% access governance maturity achieved through automation</li>
+                <li>Successful certifications maintained for all strategic clients</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="case-study fade-in">
+        <div class="case-header">
+            <h3 class="case-title">Third-Party Risk Management Framework &amp; Vendor Onboarding</h3>
+            <span class="case-tag">TPRM</span>
+        </div>
+        <p class="case-context">An educational institution needed a standardized approach for evaluating SaaS vendor security risks during the onboarding process, with no existing TPRM framework in place.</p>
+        <div class="case-actions">
+            <h4>Key Actions</h4>
+            <ul>
+                <li>Developed a standardized security checklist for SaaS vendor onboarding</li>
+                <li>Conducted end-to-end review of security risk methodology, improving mitigation strategies</li>
+                <li>Designed an institutional Secure Data Deletion Policy aligned with NIST and ISO 27001</li>
+                <li>Supported compliance assurance activities across the institution's security program</li>
+            </ul>
+        </div>
+        <div class="case-results">
+            <h4>Results</h4>
+            <ul>
+                <li>100% alignment with Third-Party Risk Management (TPRM) requirements</li>
+                <li>Strengthened data lifecycle governance with NIST/ISO-aligned policy</li>
+                <li>Improved risk decision-making through enhanced methodology</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="case-study fade-in">
+        <div class="case-header">
+            <h3 class="case-title">Security Center of Excellence (CoE) &amp; Governance Program</h3>
+            <span class="case-tag">Governance</span>
+        </div>
+        <p class="case-context">A global organization needed a structured approach to manage security compliance, coordinate security committees, and align cross-functional teams with compliance requirements.</p>
+        <div class="case-actions">
+            <h4>Key Actions</h4>
+            <ul>
+                <li>Led the Security CoE as Product Owner, managing backlogs using Agile (Scrum/Kanban)</li>
+                <li>Directed security committees and sub-committees within the CoE</li>
+                <li>Participated in local, regional, and global security committee meetings</li>
+                <li>Defined OKRs and security objectives aligned with business requirements</li>
+                <li>Managed security policies, created, updated, and ensured effective implementation company-wide</li>
+            </ul>
+        </div>
+        <div class="case-results">
+            <h4>Results</h4>
+            <ul>
+                <li>Organization's security maturity elevated from Level 2 to Level 4</li>
+                <li>Security policies effectively implemented across the whole company</li>
+                <li>Cross-functional alignment achieved through structured committee governance</li>
+            </ul>
+        </div>
+    </div>
+
+        <div class="case-study fade-in">
+            <div class="case-header">
+                <h3 class="case-title">Security Architecture Review &amp; Production Sign-Off</h3>
+                <span class="case-tag">Architecture Review</span>
+            </div>
+            <p class="case-context">As part of the Security CoE, I served as the architecture review gatekeeper for production deployments, ensuring every system design incorporated secure components, proper access controls, and compliance alignment before receiving production sign-off.</p>
+            <div class="case-actions">
+                <h4>Key Actions</h4>
+                <ul>
+                    <li>Reviewed system architectures for secure component selection and configuration (WAF, IAM, encryption, network segmentation)</li>
+                    <li>Validated that designs followed Zero Trust principles &mdash; no implicit trust, least privilege, defense-in-depth</li>
+                    <li>Conducted security control gap analysis against ISO 27001, SOX, and PCI-DSS requirements</li>
+                    <li>Provided production sign-off only after all critical and high security findings were remediated</li>
+                    <li>Collaborated with engineering teams to translate security requirements into technical implementations</li>
+                </ul>
+            </div>
+            <div class="case-results">
+                <h4>Results</h4>
+                <ul>
+                    <li>Zero critical vulnerabilities in production deployments under my review</li>
+                    <li>Security requirements integrated into SDLC from design phase, not bolted on after</li>
+                    <li>Architecture review process established as organizational standard within the CoE</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+<!-- FRAMEWORKS -->
+<section class="section section-alt" id="frameworks">
+    <h2 class="section-title">Frameworks &amp; Standards Expertise</h2>
+    <p class="section-subtitle">Deep experience implementing, auditing, and managing compliance across international security frameworks.</p>
+    <table class="framework-table">
+        <thead>
+            <tr>
+                <th>Framework / Standard</th>
+                <th>Experience</th>
+                <th>Role</th>
+                <th>Scope</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>ISO 27001:2022</strong></td>
+                <td><span class="badge badge-green">10+ years</span></td>
+                <td>Lead Implementer / Internal Auditor</td>
+                <td>Controls implementation, audit support, certification maintenance</td>
+            </tr>
+            <tr>
+                <td><strong>ISO 27018</strong></td>
+                <td><span class="badge badge-blue">3+ years</span></td>
+                <td>Compliance Officer</td>
+                <td>Personal data protection in cloud environments</td>
+            </tr>
+            <tr>
+                <td><strong>SOC2</strong></td>
+                <td><span class="badge badge-blue">3+ years</span></td>
+                <td>Compliance &amp; Audit Support</td>
+                <td>Operational documentation, control evidence, remediation</td>
+            </tr>
+            <tr>
+                <td><strong>GDPR</strong></td>
+                <td><span class="badge badge-purple">3+ years</span></td>
+                <td>Compliance Advisory</td>
+                <td>Data protection compliance, privacy controls, DLP</td>
+            </tr>
+            <tr>
+                <td><strong>PCI-DSS</strong></td>
+                <td><span class="badge badge-blue">5+ years</span></td>
+                <td>Technical Audit &amp; Compliance</td>
+                <td>Cardholder data security, vulnerability management</td>
+            </tr>
+            <tr>
+                <td><strong>NIST CSF</strong></td>
+                <td><span class="badge badge-blue">5+ years</span></td>
+                <td>Risk Assessment &amp; Controls</td>
+                <td>Framework mapping, security baseline alignment</td>
+            </tr>
+            <tr>
+                <td><strong>SOX (ITGC)</strong></td>
+                <td><span class="badge badge-green">10+ years</span></td>
+                <td>Controls &amp; Audit Support</td>
+                <td>IT general controls, access reviews, compliance monitoring</td>
+            </tr>
+            <tr>
+                <td><strong>DORA</strong></td>
+                <td><span class="badge badge-purple">2+ years</span></td>
+                <td>Compliance Assurance</td>
+                <td>Digital operational resilience for financial entities</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section class="section" id="certs">
+    <h2 class="section-title">Certifications &amp; Education</h2>
+    <p class="section-subtitle">Internationally recognized certifications and continuous professional development.</p>
+    <div class="cert-grid">
+        <div class="cert-card fade-in">
+            <div class="cert-icon">I</div>
+            <div class="cert-info">
+                <h4>ISO/IEC 27001:2022 Lead Implementer</h4>
+                <p>Internal Auditor certified</p>
+            </div>
+        </div>
+        <div class="cert-card fade-in">
+            <div class="cert-icon">S</div>
+            <div class="cert-info">
+                <h4>Scrum Master Certified (SMC)</h4>
+                <p>Agile project management</p>
+            </div>
+        </div>
+        <div class="cert-card fade-in">
+            <div class="cert-icon">P</div>
+            <div class="cert-info">
+                <h4>Product Owner Certified (SPOC)</h4>
+                <p>Agile product management</p>
+            </div>
+        </div>
+        <div class="cert-card fade-in">
+            <div class="cert-icon">A</div>
+            <div class="cert-info">
+                <h4>Azure Cloud Fundamentals</h4>
+                <p>Microsoft cloud platform</p>
+            </div>
+        </div>
+        <div class="cert-card fade-in">
+            <div class="cert-icon">K</div>
+            <div class="cert-info">
+                <h4>Kanban Designer</h4>
+                <p>Flow management methodology</p>
+            </div>
+        </div>
+        <div class="cert-card fade-in">
+            <div class="cert-icon">M</div>
+            <div class="cert-info">
+                <h4>Master in Cybersecurity (In Progress)</h4>
+                <p>Zero Trust Architecture &amp; Security Testing focus</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- LABS & COURSEWORK -->
+<section class="section" id="labs">
+    <h2 class="section-title">Strategic Projects &amp; Compliance Labs</h2>
+    <p class="section-subtitle">Strategic showcases from cybersecurity coursework &mdash; demonstrating GRC competencies without exposing full document detail.</p>
+    <div class="lab-grid">
+        <div class="lab-card lab-featured fade-in">
+            <span class="lab-badge-featured">&starf; Featured &mdash; Final Capstone Project</span>
+            <h3>Zero Trust + GenAI Cloud Audit</h3>
+            <p>Final capstone project: functional Python prototype combining Zero Trust Architecture (NIST SP 800-207) with a locally-deployed LLM to automate cloud security audits across ISO 27001, NIST, and DORA. Features Policy Decision Point architecture, risk scoring, cross-correlation engine, and PlantUML diagram generation.</p>
+            <div class="lab-tags">
+                <span class="fw-tag fw-gold">NIST SP 800-207</span>
+                <span class="fw-tag fw-green">ISO 27001</span>
+                <span class="fw-tag fw-blue">DORA</span>
+                <span class="fw-tag fw-orange">GenAI</span>
+                <span class="fw-tag fw-purple">Zero Trust</span>
+            </div>
+            <a href="labs/zero-trust-thesis.html" class="lab-btn">View Project &rarr;</a>
+        </div>
+
+        <div class="lab-card fade-in">
+            <h3>EIPD &amp; DPIA &mdash; Healthcare Sector Cloud Migration</h3>
+            <p>Data Protection Impact Assessment (DPIA) and Equal Impact and Privacy Declaration (EIPD) for healthcare sector cloud migration. Aligned with GDPR, ISO 27001, ISO 27017/27018, and NIST SP 800-144.</p>
+            <div class="lab-tags">
+                <span class="fw-tag fw-green">GDPR</span>
+                <span class="fw-tag fw-blue">DPIA / EIPD</span>
+                <span class="fw-tag fw-purple">ISO 27017</span>
+            </div>
+            <a href="labs/eipd-gdpr.html" class="lab-btn">View Lab &rarr;</a>
+        </div>
+
+        <div class="lab-card fade-in">
+            <h3>Enterprise Risk Assessment</h3>
+            <p>Full risk assessment for a defense &amp; technology sector organization using eMarisma methodology. Asset identification, threat analysis, risk evaluation, ISO 27001:2022 control mapping, and Risk Treatment Plans (PTR).</p>
+            <div class="lab-tags">
+                <span class="fw-tag fw-green">ISO 31000</span>
+                <span class="fw-tag fw-blue">ISO 27001:2022</span>
+                <span class="fw-tag fw-purple">eMarisma</span>
+            </div>
+            <a href="labs/risk-assessment.html" class="lab-btn">View Lab &rarr;</a>
+        </div>
+
+        <div class="lab-card fade-in">
+            <h3>Cloud Security Policy</h3>
+            <p>Comprehensive Cloud Acceptable Use Policy for a technology sector organization covering IAM, RBAC, MFA, CSPM, encryption, shadow IT governance, and SaaS controls. Aligned with ISO 27017/27018, NIST, and CSA CCM.</p>
+            <div class="lab-tags">
+                <span class="fw-tag fw-green">ISO 27017</span>
+                <span class="fw-tag fw-blue">ISO 27018</span>
+                <span class="fw-tag fw-purple">IAM / RBAC</span>
+                <span class="fw-tag fw-orange">CSPM</span>
+            </div>
+            <a href="labs/cloud-security-policy.html" class="lab-btn">View Lab &rarr;</a>
+        </div>
+
+        <div class="lab-card fade-in">
+            <h3>Web Application Security Audit</h3>
+            <p>OWASP ZAP audit for e-commerce sector platform with CVSS v3.1 scoring. Identified XSS, CSRF, session fixation, file upload, and IDOR vulnerabilities. EDR methodology with structured remediation plan.</p>
+            <div class="lab-tags">
+                <span class="fw-tag fw-green">OWASP ZAP</span>
+                <span class="fw-tag fw-blue">CVSS v3.1</span>
+                <span class="fw-tag fw-orange">OWASP Top 10</span>
+            </div>
+            <a href="labs/web-security-audit.html" class="lab-btn">View Lab &rarr;</a>
+        </div>
+
+        <div class="lab-card fade-in">
+            <h3>SDLC Threat Modeling &amp; Secure Design</h3>
+            <p>Threat modeling for PCI DSS-compliant e-commerce platform. STRIDE classification, DREAD scoring, TAMT tables, abuse cases, DFD trust boundary analysis, and CAPEC/CWE mapping.</p>
+            <div class="lab-tags">
+                <span class="fw-tag fw-green">STRIDE</span>
+                <span class="fw-tag fw-blue">DREAD</span>
+                <span class="fw-tag fw-orange">PCI DSS</span>
+                <span class="fw-tag fw-purple">CAPEC / CWE</span>
+            </div>
+            <a href="labs/sdlc-threat-modeling.html" class="lab-btn">View Lab &rarr;</a>
+        </div>
+    </div>
+</section>
+
+<!-- TEMPLATES -->
+<section class="section section-alt" id="templates">
+    <h2 class="section-title">GRC Templates &amp; Resources</h2>
+    <p class="section-subtitle">Downloadable sanitized templates from real-world security compliance projects. No confidential data included.</p>
+    <div class="download-grid">
+        <div class="download-card fade-in">
+            <div class="download-icon">📄</div>
+            <h4>Secure Data Deletion Policy</h4>
+            <p>Policy template aligned with NIST 800-88 and ISO 27001 Annex A.8 for secure data lifecycle management and disposal.</p>
+            <a href="templates/secure-data-deletion-policy.html" class="download-btn">View Template</a>
+        </div>
+        <div class="download-card fade-in">
+            <div class="download-icon">📋</div>
+            <h4>SaaS Vendor Security Onboarding Checklist</h4>
+            <p>Standardized TPRM checklist for evaluating third-party SaaS vendor security during the onboarding process.</p>
+            <a href="templates/tprm-vendor-checklist.html" class="download-btn">View Template</a>
+        </div>
+        <div class="download-card fade-in">
+            <div class="download-icon">🔍</div>
+            <h4>Internal Audit Report Template</h4>
+            <p>Comprehensive internal audit report structure covering scope, methodology, findings, risk ratings, and remediation tracking.</p>
+            <a href="templates/internal-audit-report.html" class="download-btn">View Template</a>
+        </div>
+        <div class="download-card fade-in">
+            <div class="download-icon">🗺️</div>
+            <h4>NIST CSF to ISO 27001 Control Mapping</h4>
+            <p>Framework mapping document aligning NIST Cybersecurity Framework controls with ISO 27001:2022 Annex A controls.</p>
+            <a href="templates/nist-iso-mapping.html" class="download-btn">View Template</a>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+    <h2>Let's Connect</h2>
+    <p>Interested in security compliance collaboration or opportunities? Reach out.</p>
+    <div class="contact-links">
+        <a href="mailto:diacarolina0303@gmail.com">diacarolina0303@gmail.com</a>
+        <a href="tel:+48662698073">+48 662 698 073</a>
+        <a href="https://www.linkedin.com/in/diana-carolina-rodriguez-casas" target="_blank" rel="noopener noreferrer">LinkedIn Profile</a>
+        <a href="https://github.com/dianacrodriguez-Stratsec" target="_blank" rel="noopener noreferrer">Portfolio (GitHub Pages)</a>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p>Diana C. Rodriguez Casas &mdash; Security Compliance &amp; GRC Specialist &copy; 2026. All content sanitized for confidentiality.</p>
+</footer>
+
+
+</body>
+</html>
